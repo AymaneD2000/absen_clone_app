@@ -1,4 +1,6 @@
 class SendingBox {
+  //mdc(Max Data Cascading) npd(Nombre de ports de données) dbmp(Débit binaire maximal par port)
+  //fc (Compression vidéo)
   int mdc;
   int npd;
   int dbmp;

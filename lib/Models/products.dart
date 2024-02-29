@@ -13,7 +13,7 @@ class Product {
   double? diagonal_mesurement;
   double pixel_per_pouce;
   String power_consumption_max;
-  double weigh;
+  double weigh_per_module;
   double modulePower;
   double usageFactor;
   double brightness;
@@ -37,5 +37,5 @@ class Product {
       this.resolution_size,
       required this.panel_px_w,
       required this.pixel_per_pouce,
-      required this.weigh});
+      required this.weigh_per_module});
 }

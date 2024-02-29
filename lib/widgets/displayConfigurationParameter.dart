@@ -49,13 +49,13 @@ class _DisplayConfigurationState extends State<DisplayConfiguration> {
                         child: Text(
                             "${ProductConfiguration.selectedConfiguration != null ? ProductConfiguration.selectedConfiguration!.resolution_width * 0.01 : 0}"),
                       ),
-                      Text('Height:'),
+                      const Text('Height:'),
                       SizedBox(
                         width: 100.0,
                         child: Text(
                             "${ProductConfiguration.selectedConfiguration != null ? ProductConfiguration.selectedConfiguration!.resolution_height * 0.01 : 0}"),
                       ),
-                      Text('Size:'),
+                      const Text('Size:'),
                       SizedBox(
                         width: 100.0,
                         child: Text(
@@ -108,7 +108,7 @@ class _DisplayConfigurationState extends State<DisplayConfiguration> {
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     children: [
-                      Text(
+                      const Text(
                         'Max Power/W: ',
                         style: TextStyle(
                           fontSize: 16.0,
@@ -120,7 +120,7 @@ class _DisplayConfigurationState extends State<DisplayConfiguration> {
                         child: Text(
                             "${ProductConfiguration.selectedConfiguration != null ? ProductConfiguration.resolution_height_count * ProductConfiguration.resolution_width_count * ProductConfiguration.selectedConfiguration!.modulePower : 0}"),
                       ),
-                      Text(
+                      const Text(
                         'Avg Power/W: ',
                         style: TextStyle(
                           fontSize: 16.0,
@@ -143,7 +143,7 @@ class _DisplayConfigurationState extends State<DisplayConfiguration> {
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     children: [
-                      Text(
+                      const Text(
                         'Data Runs: ',
                         style: TextStyle(
                           fontSize: 16.0,
@@ -155,14 +155,14 @@ class _DisplayConfigurationState extends State<DisplayConfiguration> {
                         child: Text(
                             "${ProductConfiguration.selectedConfiguration != null ? ProductConfiguration.selectedConfiguration!.modulePower : 0}"),
                       ),
-                      Text(
+                      const Text(
                         'AC Required: ',
                         style: TextStyle(
                           fontSize: 16.0,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 100.0,
                         child: TextField(),
                       ),
@@ -177,7 +177,7 @@ class _DisplayConfigurationState extends State<DisplayConfiguration> {
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     children: [
-                      Text(
+                      const Text(
                         'Weight (Kg/Lbs): ',
                         style: TextStyle(
                           fontSize: 16.0,
@@ -189,16 +189,16 @@ class _DisplayConfigurationState extends State<DisplayConfiguration> {
                         child: Text(
                             "${ProductConfiguration.selectedConfiguration != null ? ProductConfiguration.selectedConfiguration!.weigh_per_module * ProductConfiguration.resolution_height_count * ProductConfiguration.resolution_width_count * 2.20462 : 0}"),
                       ),
-                      Text(
+                      const Text(
                         '# of Sending Box: ',
                         style: TextStyle(
                           fontSize: 16.0,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 100.0,
-                        child: TextField(),
+                        child: Text(""),
                       ),
                     ],
                   ),

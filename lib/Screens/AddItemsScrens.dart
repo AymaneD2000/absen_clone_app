@@ -97,7 +97,7 @@ class _InputPageState extends State<InputPage> {
                       panel_px_w: int.parse(verticalPanelPixelController.text),
                       pixel_per_pouce:
                           double.parse(pixelPerPouceController.text),
-                      weigh: 0);
+                      weigh_per_module: 0);
                   MyHomePage.produits.add(p);
                 });
                 Navigator.pushReplacement(
