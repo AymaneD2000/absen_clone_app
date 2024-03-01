@@ -1,3 +1,4 @@
+import 'package:absens_clone_app/widgets/getX.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -32,11 +33,11 @@ class _MainDataCableCalculationState extends State<MainDataCableCalculation> {
             const SizedBox(height: 20.0),
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.999999,
-              child: const SingleChildScrollView(
+              child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: [
-                    Text(
+                    const Text(
                       'Max Data Cascading: ',
                       style: TextStyle(
                         fontSize: 16.0,
@@ -45,7 +46,8 @@ class _MainDataCableCalculationState extends State<MainDataCableCalculation> {
                     ),
                     SizedBox(
                       width: 120,
-                      child: TextField(),
+                      child: Text(
+                          "${ProductConfigurations.selectedBox.isNotEmpty ? (ProductConfigurations.selectedBox.first.npd * ProductConfigurations.selectedBox.first.dbmp) / ProductConfigurations.selectedBox.first.cv : 0}"),
                     ),
                   ],
                 ),
@@ -54,11 +56,11 @@ class _MainDataCableCalculationState extends State<MainDataCableCalculation> {
             const SizedBox(height: 20.0),
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.99999,
-              child: const SingleChildScrollView(
+              child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: [
-                    Text(
+                    const Text(
                       'Max Power Cascading: ',
                       style: TextStyle(
                         fontSize: 16.0,
@@ -67,7 +69,8 @@ class _MainDataCableCalculationState extends State<MainDataCableCalculation> {
                     ),
                     SizedBox(
                       width: 120,
-                      child: TextField(),
+                      child: Text(
+                          "${ProductConfigurations.selectedBox.isNotEmpty ? (ProductConfigurations.selectedBox.first.tc * ProductConfigurations.selectedBox.first.cm) : 0}"),
                     ),
                   ],
                 ),
@@ -76,11 +79,11 @@ class _MainDataCableCalculationState extends State<MainDataCableCalculation> {
             const SizedBox(height: 20.0),
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.9,
-              child: const SingleChildScrollView(
+              child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: [
-                    Text(
+                    const Text(
                       'Horizontal Load: ',
                       style: TextStyle(
                         fontSize: 16.0,
@@ -89,10 +92,11 @@ class _MainDataCableCalculationState extends State<MainDataCableCalculation> {
                     ),
                     SizedBox(
                       width: 60,
-                      child: TextField(),
+                      child: Text(
+                          "${ProductConfigurations.selectedBox.isNotEmpty ? (ProductConfigurations.selectedBox.first.dbmp) / ProductConfigurations.selectedBox.first.cv : 0}"),
                     ),
-                    SizedBox(width: 20.0),
-                    Text(
+                    const SizedBox(width: 20.0),
+                    const Text(
                       'Vertical Load: ',
                       style: TextStyle(
                         fontSize: 16.0,
@@ -101,7 +105,8 @@ class _MainDataCableCalculationState extends State<MainDataCableCalculation> {
                     ),
                     SizedBox(
                       width: 60,
-                      child: TextField(),
+                      child: Text(
+                          "${ProductConfigurations.selectedBox.isNotEmpty && ProductConfigurations.resolution_height_count != 0 ? ((ProductConfigurations.selectedBox.first.dbmp) / ProductConfigurations.selectedBox.first.cv) / ProductConfigurations.resolution_height_count : 0}"),
                     ),
                   ],
                 ),

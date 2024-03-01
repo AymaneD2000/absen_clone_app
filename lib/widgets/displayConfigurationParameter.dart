@@ -1,5 +1,5 @@
 import 'package:absens_clone_app/Models/products.dart';
-import 'package:absens_clone_app/widgets/productInformation.dart';
+import 'package:absens_clone_app/widgets/getX.dart';
 import 'package:flutter/material.dart';
 
 class DisplayConfiguration extends StatefulWidget {
@@ -47,19 +47,19 @@ class _DisplayConfigurationState extends State<DisplayConfiguration> {
                       SizedBox(
                         width: 100.0,
                         child: Text(
-                            "${ProductConfiguration.selectedConfiguration != null ? ProductConfiguration.selectedConfiguration!.resolution_width * 0.01 : 0}"),
+                            "${ProductConfigurations.selectedConfiguration.isNotEmpty ? ProductConfigurations.selectedConfiguration.first.resolution_width * 0.01 : 0}"),
                       ),
                       const Text('Height:'),
                       SizedBox(
                         width: 100.0,
                         child: Text(
-                            "${ProductConfiguration.selectedConfiguration != null ? ProductConfiguration.selectedConfiguration!.resolution_height * 0.01 : 0}"),
+                            "${ProductConfigurations.selectedConfiguration.isNotEmpty ? ProductConfigurations.selectedConfiguration.first.resolution_height * 0.01 : 0}"),
                       ),
                       const Text('Size:'),
                       SizedBox(
                         width: 100.0,
                         child: Text(
-                            "${ProductConfiguration.selectedConfiguration != null ? ProductConfiguration.selectedConfiguration!.resolution_width * ProductConfiguration.selectedConfiguration!.resolution_height! * 0.01 : 0}}"),
+                            "${ProductConfigurations.selectedConfiguration.isNotEmpty ? ProductConfigurations.selectedConfiguration.first.resolution_width * ProductConfigurations.selectedConfiguration.first.resolution_height * 0.01 : 0}}"),
                       ),
                     ],
                   ),
@@ -83,19 +83,19 @@ class _DisplayConfigurationState extends State<DisplayConfiguration> {
                       SizedBox(
                         width: 100.0,
                         child: Text(
-                            "${ProductConfiguration.selectedConfiguration != null ? ProductConfiguration.selectedConfiguration!.resolution_width * 0.01 * 3.28084 : 0}"),
+                            "${ProductConfigurations.selectedConfiguration.isNotEmpty ? ProductConfigurations.selectedConfiguration.first.resolution_width * 0.01 * 3.28084 : 0}"),
                       ),
                       const Text('Height:'),
                       SizedBox(
                         width: 100.0,
                         child: Text(
-                            "${ProductConfiguration.selectedConfiguration != null ? ProductConfiguration.selectedConfiguration!.resolution_height * 0.01 * 3.28084 : 0}"),
+                            "${ProductConfigurations.selectedConfiguration.isNotEmpty ? ProductConfigurations.selectedConfiguration.first.resolution_height * 0.01 * 3.28084 : 0}"),
                       ),
                       const Text('Size:'),
                       SizedBox(
                         width: 100.0,
                         child: Text(
-                            "${ProductConfiguration.selectedConfiguration != null ? ProductConfiguration.selectedConfiguration!.resolution_width * ProductConfiguration.selectedConfiguration!.resolution_height * 0.01 * 3.28084 : 0}"),
+                            "${ProductConfigurations.selectedConfiguration.isNotEmpty ? ProductConfigurations.selectedConfiguration.first.resolution_width * ProductConfigurations.selectedConfiguration.first.resolution_height * 0.01 * 3.28084 : 0}"),
                       ),
                     ],
                   ),
@@ -118,7 +118,7 @@ class _DisplayConfigurationState extends State<DisplayConfiguration> {
                       SizedBox(
                         width: 100.0,
                         child: Text(
-                            "${ProductConfiguration.selectedConfiguration != null ? ProductConfiguration.resolution_height_count * ProductConfiguration.resolution_width_count * ProductConfiguration.selectedConfiguration!.modulePower : 0}"),
+                            "${ProductConfigurations.selectedConfiguration.isNotEmpty ? ProductConfigurations.resolution_height_count * ProductConfigurations.resolution_width_count * ProductConfigurations.selectedConfiguration.first.modulePower : 0}"),
                       ),
                       const Text(
                         'Avg Power/W: ',
@@ -130,7 +130,7 @@ class _DisplayConfigurationState extends State<DisplayConfiguration> {
                       SizedBox(
                         width: 100.0,
                         child: Text(
-                            "${ProductConfiguration.selectedConfiguration != null ? ProductConfiguration.resolution_height_count * ProductConfiguration.resolution_width_count * ProductConfiguration.selectedConfiguration!.modulePower * ProductConfiguration.selectedConfiguration!.brightness * ProductConfiguration.selectedConfiguration!.usageFactor : 0}"),
+                            "${ProductConfigurations.selectedConfiguration.isNotEmpty ? ProductConfigurations.resolution_height_count * ProductConfigurations.resolution_width_count * ProductConfigurations.selectedConfiguration.first.modulePower * ProductConfigurations.selectedConfiguration.first.brightness * ProductConfigurations.selectedConfiguration.first.usageFactor : 0}"),
                       ),
                     ],
                   ),
@@ -153,7 +153,7 @@ class _DisplayConfigurationState extends State<DisplayConfiguration> {
                       SizedBox(
                         width: 100.0,
                         child: Text(
-                            "${ProductConfiguration.selectedConfiguration != null ? ProductConfiguration.selectedConfiguration!.modulePower : 0}"),
+                            "${ProductConfigurations.selectedConfiguration.isNotEmpty ? ProductConfigurations.selectedConfiguration.first.modulePower : 0}"),
                       ),
                       const Text(
                         'AC Required: ',
@@ -187,7 +187,7 @@ class _DisplayConfigurationState extends State<DisplayConfiguration> {
                       SizedBox(
                         width: 100.0,
                         child: Text(
-                            "${ProductConfiguration.selectedConfiguration != null ? ProductConfiguration.selectedConfiguration!.weigh_per_module * ProductConfiguration.resolution_height_count * ProductConfiguration.resolution_width_count * 2.20462 : 0}"),
+                            "${ProductConfigurations.selectedConfiguration.isNotEmpty ? ProductConfigurations.selectedConfiguration.first.weigh_per_module * ProductConfigurations.resolution_height_count * ProductConfigurations.resolution_width_count * 2.20462 : 0}"),
                       ),
                       const Text(
                         '# of Sending Box: ',

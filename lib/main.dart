@@ -1,13 +1,17 @@
+import 'package:absens_clone_app/Models/SendingBox.dart';
 import 'package:absens_clone_app/Models/products.dart';
 import 'package:absens_clone_app/Screens/AddItemsScrens.dart';
 import 'package:absens_clone_app/Screens/displayInformation.dart';
 import 'package:absens_clone_app/Screens/otherInformationScreen.dart';
+import 'package:absens_clone_app/Screens/sendingBoxform.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+// void main() {
+//   runApp(const MyApp());
+// }
+void main() => runApp(const GetMaterialApp(home: MyApp()));
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -16,6 +20,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         // This is the theme of your application.
@@ -54,6 +59,24 @@ class MyHomePage extends StatefulWidget {
   // always marked "final".
 
   final String title;
+  static List<SendingBox> boxs = [
+    SendingBox(
+      boxName: "Box 1",
+      npd: 3,
+      dbmp: 4,
+      cv: 5,
+      tc: 2,
+      cm: 2,
+    ),
+    SendingBox(
+      boxName: "Box 2",
+      npd: 4,
+      dbmp: 1,
+      cv: 2,
+      tc: 5,
+      cm: 6,
+    )
+  ];
   static List<Product> produits = [
     Product(
         dataruns: 2,
@@ -84,14 +107,20 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Display Information"),
+        title: const Text("Display Information"),
         actions: [
+          TextButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => SendingBoxForm()));
+              },
+              child: const Text("Add Sending Box")),
           TextButton(
               onPressed: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => InputPage()));
               },
-              child: Text("Add Items"))
+              child: const Text("Add Product"))
         ],
       ),
       body: SingleChildScrollView(
@@ -99,7 +128,12 @@ class _MyHomePageState extends State<MyHomePage> {
           height:
               MediaQuery.of(context).size.height * 0.99999999999999999999999,
           child: Column(
-            children: [DisplayInformation(), OrtherScreen()],
+            children: [
+              const DisplayInformation(),
+              OrtherScreen(
+                contexte: context,
+              )
+            ],
           ),
         ),
       ),

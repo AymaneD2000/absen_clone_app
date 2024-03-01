@@ -1,17 +1,13 @@
 import 'dart:math';
 
+import 'package:absens_clone_app/Models/SendingBox.dart';
 import 'package:absens_clone_app/Models/products.dart';
 import 'package:absens_clone_app/main.dart';
+import 'package:absens_clone_app/widgets/getX.dart';
 import 'package:flutter/material.dart';
 
 class ProductConfiguration extends StatefulWidget {
   const ProductConfiguration({Key? key}) : super(key: key);
-  static String? _selectedBox;
-  static Product? selectedConfiguration;
-  static int resolution_width_count = 0;
-  static int resolution_height_count = 0;
-  static int resolution_width = 0;
-  static int resolution_height = 0;
   @override
   State<ProductConfiguration> createState() => _ProductConfigurationState();
 }
@@ -20,7 +16,7 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
   String? _selectedProduct;
   final List<Product> _products = MyHomePage.produits;
   //final List<Product> _configurations = MyHomePage.produits;
-  final List<String> _boxes = ['Box A', 'Box B', 'Box C'];
+  final List<SendingBox> _boxes = MyHomePage.boxs;
 
   void _onProductChanged(String? newProduct) {
     setState(() {
@@ -28,9 +24,11 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
     });
   }
 
-  void _onBoxChanged(String? newProduct) {
+  void _onBoxChanged(SendingBox? newProduct) {
     setState(() {
-      ProductConfiguration._selectedBox = newProduct;
+      newProduct != null
+          ? ProductConfigurations.selectedBox.add(newProduct)
+          : 0;
     });
   }
 
@@ -70,8 +68,12 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: [
-                    _buildDropdownConfiguration("Configuration :",
-                        ProductConfiguration.selectedConfiguration, _products),
+                    _buildDropdownConfiguration(
+                        "Configuration :",
+                        ProductConfigurations.selectedConfiguration.isEmpty
+                            ? null
+                            : ProductConfigurations.selectedConfiguration.first,
+                        _products),
                   ],
                 ),
               ),
@@ -107,10 +109,10 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
                 scrollDirection: Axis.horizontal,
                 child: _buildTextFieldRow(
                     "Panel Pix (W) :",
-                    ProductConfiguration.selectedConfiguration == null
+                    ProductConfigurations.selectedConfiguration.isEmpty
                         ? 0
-                        : ProductConfiguration
-                            .selectedConfiguration!.panel_px_w),
+                        : ProductConfigurations
+                            .selectedConfiguration.first.panel_px_w),
               ),
             ),
             const SizedBox(height: 10.0),
@@ -120,10 +122,10 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
                 scrollDirection: Axis.horizontal,
                 child: _buildTextFieldRow(
                     "Panel Pix (H) :",
-                    ProductConfiguration.selectedConfiguration == null
+                    ProductConfigurations.selectedConfiguration.isEmpty
                         ? 0
-                        : ProductConfiguration
-                            .selectedConfiguration!.panel_pix_h),
+                        : ProductConfigurations
+                            .selectedConfiguration.first.panel_pix_h),
               ),
             ),
             const SizedBox(height: 10.0),
@@ -131,28 +133,33 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
             const SizedBox(height: 10.0),
             _buildTextFieldRowRatio(
                 "Aspect Ratio (W:H) :",
-                ProductConfiguration.selectedConfiguration == null
+                ProductConfigurations.selectedConfiguration.isEmpty
                     ? 0
-                    : ProductConfiguration
-                        .selectedConfiguration!.aspect_ratio_w,
-                ProductConfiguration.selectedConfiguration == null
+                    : ProductConfigurations
+                        .selectedConfiguration.first.aspect_ratio_w,
+                ProductConfigurations.selectedConfiguration.isEmpty
                     ? 0
-                    : ProductConfiguration
-                        .selectedConfiguration!.aspect_ratio_w),
+                    : ProductConfigurations
+                        .selectedConfiguration.first.aspect_ratio_w),
             const SizedBox(height: 10.0),
             _buildTextFieldRowDiagonale(
                 "Diagonale :",
-                ProductConfiguration.resolution_height == 0 ||
-                        ProductConfiguration.resolution_width == 0
+                ProductConfigurations.resolution_height == 0 ||
+                        ProductConfigurations.resolution_width == 0
                     ? 0
-                    : (sqrt(pow(ProductConfiguration.resolution_height, 2) +
-                            pow(ProductConfiguration.resolution_width, 2)) *
+                    : (sqrt(pow(ProductConfigurations.resolution_height, 2) +
+                            pow(ProductConfigurations.resolution_width, 2)) *
                         1 /
                         334 *
                         0.0254)),
             const SizedBox(height: 10.0),
-            _buildDropdownBox("Sending Box :",
-                ProductConfiguration._selectedBox, _boxes, _onBoxChanged),
+            _buildDropdownBox(
+                "Sending Box :",
+                ProductConfigurations.selectedBox.isNotEmpty
+                    ? ProductConfigurations.selectedBox.first
+                    : null,
+                _boxes,
+                _onBoxChanged),
             const SizedBox(height: 20.0),
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.9,
@@ -202,11 +209,14 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
           value: value,
           onChanged: (values) {
             setState(() {
-              ProductConfiguration.selectedConfiguration = values;
-              ProductConfiguration.resolution_height = 0;
-              ProductConfiguration.resolution_width = 0;
-              ProductConfiguration.resolution_height_count = 0;
-              ProductConfiguration.resolution_width_count = 0;
+              ProductConfigurations.selectedConfiguration.clear();
+              values != null
+                  ? ProductConfigurations.selectedConfiguration.add(values)
+                  : 0;
+              ProductConfigurations.resolution_height = 0;
+              ProductConfigurations.resolution_width = 0;
+              ProductConfigurations.resolution_height_count = 0;
+              ProductConfigurations.resolution_width_count = 0;
             });
           },
           items: items.map((Product item) {
@@ -220,8 +230,8 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
     );
   }
 
-  Widget _buildDropdownBox(String label, String? value, List<String> items,
-      ValueChanged<String?> onChanged) {
+  Widget _buildDropdownBox(String label, SendingBox? value,
+      List<SendingBox> items, ValueChanged<SendingBox?> onChanged) {
     return Row(
       children: [
         Text(
@@ -230,13 +240,13 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
               fontSize: MediaQuery.of(context).textScaler.scale(16),
               fontWeight: FontWeight.bold),
         ),
-        DropdownButton<String>(
+        DropdownButton<SendingBox>(
           value: value,
           onChanged: onChanged,
-          items: items.map((String item) {
-            return DropdownMenuItem<String>(
+          items: items.map((SendingBox item) {
+            return DropdownMenuItem<SendingBox>(
               value: item,
-              child: Text(item),
+              child: Text(item.boxName),
             );
           }).toList(),
         ),
@@ -261,18 +271,18 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
               style: const ButtonStyle(
                   backgroundColor: MaterialStatePropertyAll(Colors.red)),
               onPressed: () {
-                ProductConfiguration.selectedConfiguration == null
+                ProductConfigurations.selectedConfiguration.isEmpty
                     ? 0
                     : setState(() {
-                        ProductConfiguration.resolution_width_count > 0
-                            ? ProductConfiguration.resolution_width_count--
-                            : ProductConfiguration.resolution_width_count;
-                        var d = ProductConfiguration
-                                .selectedConfiguration!.panel_px_w *
-                            ProductConfiguration.resolution_width_count *
-                            ProductConfiguration
-                                .selectedConfiguration!.aspect_ratio_w;
-                        ProductConfiguration.resolution_width = d.toInt();
+                        ProductConfigurations.resolution_width_count > 0
+                            ? ProductConfigurations.resolution_width_count--
+                            : ProductConfigurations.resolution_width_count;
+                        var d = ProductConfigurations
+                                .selectedConfiguration.first.panel_px_w *
+                            ProductConfigurations.resolution_width_count *
+                            ProductConfigurations
+                                .selectedConfiguration.first.aspect_ratio_w;
+                        ProductConfigurations.resolution_width = d.toInt();
                       });
               },
               icon: Icon(Icons.remove,
@@ -283,7 +293,7 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
               width: 30.0,
               child: Center(
                 child: Text(
-                  "${ProductConfiguration.resolution_width_count}",
+                  "${ProductConfigurations.resolution_width_count}",
                   style: TextStyle(
                       fontSize: MediaQuery.of(context).textScaler.scale(16),
                       fontWeight: FontWeight.bold),
@@ -294,14 +304,14 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
               style: const ButtonStyle(
                   backgroundColor: MaterialStatePropertyAll(Colors.green)),
               onPressed: () {
-                ProductConfiguration.selectedConfiguration == null
+                ProductConfigurations.selectedConfiguration.isEmpty
                     ? 0
                     : setState(() {
-                        ProductConfiguration.resolution_width_count++;
-                        var d = ProductConfiguration
-                                .selectedConfiguration!.panel_px_w *
-                            ProductConfiguration.resolution_width_count;
-                        ProductConfiguration.resolution_width = d.toInt();
+                        ProductConfigurations.resolution_width_count++;
+                        var d = ProductConfigurations
+                                .selectedConfiguration.first.panel_px_w *
+                            ProductConfigurations.resolution_width_count;
+                        ProductConfigurations.resolution_width = d.toInt();
                       });
               },
               icon: Icon(Icons.add,
@@ -331,16 +341,16 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
               style: const ButtonStyle(
                   backgroundColor: MaterialStatePropertyAll(Colors.red)),
               onPressed: () {
-                ProductConfiguration.selectedConfiguration == null
+                ProductConfigurations.selectedConfiguration.isEmpty
                     ? 0
                     : setState(() {
-                        ProductConfiguration.resolution_height_count > 0
-                            ? ProductConfiguration.resolution_height_count--
-                            : ProductConfiguration.resolution_height_count;
-                        var d = ProductConfiguration
-                                .selectedConfiguration!.panel_pix_h *
-                            ProductConfiguration.resolution_height_count;
-                        ProductConfiguration.resolution_height = d.toInt();
+                        ProductConfigurations.resolution_height_count > 0
+                            ? ProductConfigurations.resolution_height_count--
+                            : ProductConfigurations.resolution_height_count;
+                        var d = ProductConfigurations
+                                .selectedConfiguration.first.panel_pix_h *
+                            ProductConfigurations.resolution_height_count;
+                        ProductConfigurations.resolution_height = d.toInt();
                       });
               },
               icon: Icon(Icons.remove,
@@ -351,7 +361,7 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
               width: 30.0,
               child: Center(
                 child: Text(
-                  "${ProductConfiguration.resolution_height_count}",
+                  "${ProductConfigurations.resolution_height_count}",
                   style: TextStyle(
                       fontSize: MediaQuery.of(context).textScaler.scale(16),
                       fontWeight: FontWeight.bold),
@@ -362,14 +372,14 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
               style: const ButtonStyle(
                   backgroundColor: MaterialStatePropertyAll(Colors.green)),
               onPressed: () {
-                ProductConfiguration.selectedConfiguration == null
+                ProductConfigurations.selectedConfiguration.isEmpty
                     ? 0
                     : setState(() {
-                        ProductConfiguration.resolution_height_count++;
-                        var d = ProductConfiguration
-                                .selectedConfiguration!.panel_pix_h *
-                            ProductConfiguration.resolution_height_count;
-                        ProductConfiguration.resolution_height = d.toInt();
+                        ProductConfigurations.resolution_height_count++;
+                        var d = ProductConfigurations
+                                .selectedConfiguration.first.panel_pix_h *
+                            ProductConfigurations.resolution_height_count;
+                        ProductConfigurations.resolution_height = d.toInt();
                       });
               },
               icon: Icon(Icons.add,
@@ -487,7 +497,7 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
             SizedBox(
                 width: 80,
                 child: Text(
-                  "${ProductConfiguration.resolution_width}",
+                  "${ProductConfigurations.resolution_width}",
                   style: TextStyle(
                       fontSize: MediaQuery.of(context).textScaler.scale(16)),
                 )),
@@ -500,7 +510,7 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
             ),
             SizedBox(
                 width: 80,
-                child: Text("${ProductConfiguration.resolution_height}",
+                child: Text("${ProductConfigurations.resolution_height}",
                     style: TextStyle(
                         fontSize:
                             MediaQuery.of(context).textScaler.scale(16)))),
@@ -514,7 +524,7 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
             SizedBox(
                 width: 80,
                 child: Text(
-                    "${ProductConfiguration.resolution_height * ProductConfiguration.resolution_width}",
+                    "${ProductConfigurations.resolution_height * ProductConfigurations.resolution_width}",
                     style: TextStyle(
                         fontSize:
                             MediaQuery.of(context).textScaler.scale(16)))),
