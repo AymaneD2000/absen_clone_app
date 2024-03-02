@@ -1,17 +1,35 @@
+import 'dart:ffi';
+
 import 'package:absens_clone_app/Models/SendingBox.dart';
 import 'package:absens_clone_app/Models/products.dart';
 import 'package:absens_clone_app/Screens/AddItemsScrens.dart';
 import 'package:absens_clone_app/Screens/displayInformation.dart';
 import 'package:absens_clone_app/Screens/otherInformationScreen.dart';
 import 'package:absens_clone_app/Screens/sendingBoxform.dart';
+import 'package:absens_clone_app/helper/helper.dart';
+import 'package:absens_clone_app/helper/provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:provider/provider.dart';
 
 // void main() {
 //   runApp(const MyApp());
 // }
-void main() => runApp(const GetMaterialApp(home: MyApp()));
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  final initFuture = MobileAds.instance.initialize();
+  final adState = AdState(initFuture);
+  runApp(MultiProvider(
+    providers: [ChangeNotifierProvider(create: (_) => MyProvider())],
+    child: Provider.value(
+      value: adState,
+      builder: (context, child) => const MyApp(),
+    ),
+  ));
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -19,7 +37,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -103,6 +121,24 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  BannerAd? bannerAd;
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    final adState = Provider.of<AdState>(context);
+    adState.initialisation.then((value) {
+      setState(() {
+        bannerAd = BannerAd(
+            size: AdSize.banner,
+            adUnitId: adState.bannerAdUnitId,
+            listener: adState.adListener,
+            request: AdRequest())
+          ..load();
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -130,6 +166,12 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
             children: [
               const DisplayInformation(),
+              // bannerAd == null
+              //     ? Container(
+              //         height: 50,
+              //         color: Colors.purple,
+              //       )
+              //     : Container(height: 90, child: AdWidget(ad: bannerAd!)),
               OrtherScreen(
                 contexte: context,
               )

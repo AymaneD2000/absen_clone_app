@@ -2,9 +2,11 @@ import 'dart:math';
 
 import 'package:absens_clone_app/Models/SendingBox.dart';
 import 'package:absens_clone_app/Models/products.dart';
+import 'package:absens_clone_app/helper/provider.dart';
 import 'package:absens_clone_app/main.dart';
 import 'package:absens_clone_app/widgets/getX.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ProductConfiguration extends StatefulWidget {
   const ProductConfiguration({Key? key}) : super(key: key);
@@ -15,13 +17,14 @@ class ProductConfiguration extends StatefulWidget {
 class _ProductConfigurationState extends State<ProductConfiguration> {
   String? _selectedProduct;
   final List<Product> _products = MyHomePage.produits;
-  //final List<Product> _configurations = MyHomePage.produits;
+  final List<Product> _configurations = MyHomePage.produits;
   final List<SendingBox> _boxes = MyHomePage.boxs;
 
   void _onProductChanged(String? newProduct) {
     setState(() {
       _selectedProduct = newProduct;
     });
+    MyProvider().onProductChanged(newProduct);
   }
 
   void _onBoxChanged(SendingBox? newProduct) {
@@ -32,10 +35,20 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
     });
   }
 
+  late MyProvider provider;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    provider = Provider.of<MyProvider>(context, listen: false);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {});
+  }
+
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Padding(
+    return Consumer<MyProvider>(builder: (context, data, child) {
+      return SingleChildScrollView(
+          child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,8 +68,8 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: [
-                    _buildDropdown("Select Product :", _selectedProduct,
-                        _products, _onProductChanged)
+                    _buildDropdown("Select Product :", data.selectedProduct,
+                        _products, data.onProductChanged)
                   ],
                 ),
               ),
@@ -73,7 +86,8 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
                         ProductConfigurations.selectedConfiguration.isEmpty
                             ? null
                             : ProductConfigurations.selectedConfiguration.first,
-                        _products),
+                        _products,
+                        provider),
                   ],
                 ),
               ),
@@ -85,7 +99,8 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: [
-                    _buildQuantitySectionHorizontale("Horizontal Qty:"),
+                    _buildQuantitySectionHorizontale(
+                        "Horizontal Qty:", provider),
                   ],
                 ),
               ),
@@ -97,7 +112,7 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: [
-                    _buildQuantitySectionVerticale("Vertical Qty:"),
+                    _buildQuantitySectionVerticale("Vertical Qty:", provider),
                   ],
                 ),
               ),
@@ -167,8 +182,8 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
             ),
           ],
         ),
-      ),
-    );
+      ));
+    });
   }
 
   Widget _buildDropdown(String label, String? value, List<Product> items,
@@ -196,7 +211,7 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
   }
 
   Widget _buildDropdownConfiguration(
-      String label, Product? value, List<Product> items) {
+      String label, Product? value, List<Product> items, MyProvider pro) {
     return Row(
       children: [
         Text(
@@ -210,13 +225,20 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
           onChanged: (values) {
             setState(() {
               ProductConfigurations.selectedConfiguration.clear();
+              pro.selectedConfiguration.clear();
               values != null
                   ? ProductConfigurations.selectedConfiguration.add(values)
                   : 0;
+              values != null ? pro.selectedConfiguration.add(values) : 0;
               ProductConfigurations.resolution_height = 0;
               ProductConfigurations.resolution_width = 0;
               ProductConfigurations.resolution_height_count = 0;
               ProductConfigurations.resolution_width_count = 0;
+
+              pro.resolution_height = 0;
+              pro.resolution_width = 0;
+              pro.resolution_height_count = 0;
+              pro.resolution_width_count = 0;
             });
           },
           items: items.map((Product item) {
@@ -254,7 +276,7 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
     );
   }
 
-  Widget _buildQuantitySectionHorizontale(String label) {
+  Widget _buildQuantitySectionHorizontale(String label, MyProvider pro) {
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.999,
       child: SingleChildScrollView(
@@ -271,19 +293,7 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
               style: const ButtonStyle(
                   backgroundColor: MaterialStatePropertyAll(Colors.red)),
               onPressed: () {
-                ProductConfigurations.selectedConfiguration.isEmpty
-                    ? 0
-                    : setState(() {
-                        ProductConfigurations.resolution_width_count > 0
-                            ? ProductConfigurations.resolution_width_count--
-                            : ProductConfigurations.resolution_width_count;
-                        var d = ProductConfigurations
-                                .selectedConfiguration.first.panel_px_w *
-                            ProductConfigurations.resolution_width_count *
-                            ProductConfigurations
-                                .selectedConfiguration.first.aspect_ratio_w;
-                        ProductConfigurations.resolution_width = d.toInt();
-                      });
+                pro.horizCalculMoin();
               },
               icon: Icon(Icons.remove,
                   color: Colors.black,
@@ -304,15 +314,7 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
               style: const ButtonStyle(
                   backgroundColor: MaterialStatePropertyAll(Colors.green)),
               onPressed: () {
-                ProductConfigurations.selectedConfiguration.isEmpty
-                    ? 0
-                    : setState(() {
-                        ProductConfigurations.resolution_width_count++;
-                        var d = ProductConfigurations
-                                .selectedConfiguration.first.panel_px_w *
-                            ProductConfigurations.resolution_width_count;
-                        ProductConfigurations.resolution_width = d.toInt();
-                      });
+                pro.horizCalculPlus();
               },
               icon: Icon(Icons.add,
                   color: Colors.black,
@@ -324,7 +326,7 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
     );
   }
 
-  Widget _buildQuantitySectionVerticale(String label) {
+  Widget _buildQuantitySectionVerticale(String label, MyProvider pro) {
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.999,
       child: SingleChildScrollView(
@@ -341,17 +343,7 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
               style: const ButtonStyle(
                   backgroundColor: MaterialStatePropertyAll(Colors.red)),
               onPressed: () {
-                ProductConfigurations.selectedConfiguration.isEmpty
-                    ? 0
-                    : setState(() {
-                        ProductConfigurations.resolution_height_count > 0
-                            ? ProductConfigurations.resolution_height_count--
-                            : ProductConfigurations.resolution_height_count;
-                        var d = ProductConfigurations
-                                .selectedConfiguration.first.panel_pix_h *
-                            ProductConfigurations.resolution_height_count;
-                        ProductConfigurations.resolution_height = d.toInt();
-                      });
+                provider.verticalCalculMoin();
               },
               icon: Icon(Icons.remove,
                   color: Colors.black,
@@ -372,15 +364,7 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
               style: const ButtonStyle(
                   backgroundColor: MaterialStatePropertyAll(Colors.green)),
               onPressed: () {
-                ProductConfigurations.selectedConfiguration.isEmpty
-                    ? 0
-                    : setState(() {
-                        ProductConfigurations.resolution_height_count++;
-                        var d = ProductConfigurations
-                                .selectedConfiguration.first.panel_pix_h *
-                            ProductConfigurations.resolution_height_count;
-                        ProductConfigurations.resolution_height = d.toInt();
-                      });
+                pro.verticalCalculPlus();
               },
               icon: Icon(Icons.add,
                   color: Colors.black,
