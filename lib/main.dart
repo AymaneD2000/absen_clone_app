@@ -166,12 +166,12 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
             children: [
               const DisplayInformation(),
-              // bannerAd == null
-              //     ? Container(
-              //         height: 50,
-              //         color: Colors.purple,
-              //       )
-              //     : Container(height: 90, child: AdWidget(ad: bannerAd!)),
+              bannerAd == null
+                  ? Container(
+                      height: 50,
+                      color: Colors.purple,
+                    )
+                  : Container(height: 90, child: AdWidget(ad: bannerAd!)),
               OrtherScreen(
                 contexte: context,
               )

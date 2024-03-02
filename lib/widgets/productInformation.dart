@@ -296,7 +296,7 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
                 pro.horizCalculMoin();
               },
               icon: Icon(Icons.remove,
-                  color: Colors.black,
+                  color: Colors.white,
                   size: MediaQuery.of(context).textScaler.scale(18)),
             ),
             SizedBox(
@@ -317,7 +317,7 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
                 pro.horizCalculPlus();
               },
               icon: Icon(Icons.add,
-                  color: Colors.black,
+                  color: Colors.white,
                   size: MediaQuery.of(context).textScaler.scale(18)),
             ),
           ],
@@ -346,7 +346,7 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
                 provider.verticalCalculMoin();
               },
               icon: Icon(Icons.remove,
-                  color: Colors.black,
+                  color: Colors.white,
                   size: MediaQuery.of(context).textScaler.scale(18)),
             ),
             SizedBox(
@@ -367,7 +367,7 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
                 pro.verticalCalculPlus();
               },
               icon: Icon(Icons.add,
-                  color: Colors.black,
+                  color: Colors.white,
                   size: MediaQuery.of(context).textScaler.scale(18)),
             ),
           ],
