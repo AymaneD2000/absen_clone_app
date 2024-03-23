@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:absens_clone_app/Models/SendingBox.dart';
 import 'package:absens_clone_app/Models/products.dart';
 import 'package:absens_clone_app/Screens/AddItemsScrens.dart';
@@ -8,9 +6,11 @@ import 'package:absens_clone_app/Screens/otherInformationScreen.dart';
 import 'package:absens_clone_app/Screens/sendingBoxform.dart';
 import 'package:absens_clone_app/helper/helper.dart';
 import 'package:absens_clone_app/helper/provider.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:absens_clone_app/widgets/displayConfigurationParameter.dart';
+import 'package:absens_clone_app/widgets/mainDataCableCalculation.dart';
+import 'package:absens_clone_app/widgets/productInformation.dart';
+import 'package:absens_clone_app/widgets/texte.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
@@ -139,46 +139,77 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  int index = 0;
+  void setIndex(int value) {
+    setState(() {
+      index = value;
+    });
+  }
+
+  List<Widget> _pages = [
+    ProductConfiguration(),
+    DisplayConfiguration(),
+    MainDataCableCalculation(),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // backgroundColor: Colors.black12,
       appBar: AppBar(
-        title: const Text("Display Information"),
+        //backgroundColor: Colors.black26,
+        //title: const Text("Display Information"),
         actions: [
           TextButton(
               onPressed: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => SendingBoxForm()));
               },
-              child: const Text("Add Sending Box")),
+              child: const WText(
+                "Add Sending Box",
+                color: Colors.blue,
+              )),
           TextButton(
               onPressed: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => InputPage()));
               },
-              child: const Text("Add Product"))
+              child: const WText("Add Product",
+                  color: Color.fromARGB(255, 30, 98, 47)))
         ],
       ),
-      body: SingleChildScrollView(
-        child: SizedBox(
-          height:
-              MediaQuery.of(context).size.height * 0.99999999999999999999999,
-          child: Column(
-            children: [
-              const DisplayInformation(),
-              bannerAd == null
-                  ? Container(
-                      height: 50,
-                      color: Colors.purple,
-                    )
-                  : Container(height: 90, child: AdWidget(ad: bannerAd!)),
-              OrtherScreen(
-                contexte: context,
-              )
-            ],
-          ),
-        ),
-      ),
+      body: _pages[index],
+      bottomNavigationBar: BottomNavigationBar(
+          selectedItemColor: Colors.blue,
+          currentIndex: index,
+          onTap: setIndex,
+          items: [
+            BottomNavigationBarItem(
+                icon: Icon(Icons.settings), label: 'Config'),
+            BottomNavigationBarItem(icon: Icon(Icons.cable), label: 'MDCC'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.calculate), label: 'Calculation')
+          ]),
     );
   }
 }
+// SingleChildScrollView(
+//         child: SizedBox(
+//           height:
+//               MediaQuery.of(context).size.height * 0.99999999999999999999999,
+//           child: Column(
+//             children: [
+//               const DisplayInformation(),
+//               bannerAd == null
+//                   ? Container(
+//                       height: 50,
+//                       color: Colors.purple,
+//                     )
+//                   : Container(height: 90, child: AdWidget(ad: bannerAd!)),
+//               OrtherScreen(
+//                 contexte: context,
+//               )
+//             ],
+//           ),
+//         ),
+//       ),

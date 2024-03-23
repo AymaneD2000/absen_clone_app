@@ -38,6 +38,8 @@ dependencies:
   get: ^4.6.6
   provider: ^6.1.2
   google_mobile_ads: ^4.0.0
+  gap: ^3.0.1
+  google_fonts: ^6.2.0
 
 dev_dependencies:
   flutter_test:

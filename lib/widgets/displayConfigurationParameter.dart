@@ -1,6 +1,9 @@
 import 'package:absens_clone_app/Models/products.dart';
+import 'package:absens_clone_app/Screens/displayInformation.dart';
 import 'package:absens_clone_app/widgets/getX.dart';
+import 'package:absens_clone_app/widgets/texte.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 
 class DisplayConfiguration extends StatefulWidget {
   DisplayConfiguration({this.product, Key? key}) : super(key: key);
@@ -13,20 +16,21 @@ class _DisplayConfigurationState extends State<DisplayConfiguration> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.5,
+      height: MediaQuery.of(context).size.height * 0.9,
       child: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              DisplayInformation(),
+              Gap(10),
               const Center(
-                child: Text(
+                child: WText(
                   'Display Configuration',
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  size: 20.0,
+                  weight: FontWeight.bold,
+                  color: Colors.blueGrey,
                 ),
               ),
               const SizedBox(height: 20.0),
@@ -36,132 +40,117 @@ class _DisplayConfigurationState extends State<DisplayConfiguration> {
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     children: [
-                      const Text(
-                        'Dimensions (m): ',
-                        style: TextStyle(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const Text('Width:'),
+                      const WText('Dimensions (m): ',
+                          size: 16.0,
+                          weight: FontWeight.bold,
+                          color: Color.fromARGB(255, 11, 68, 99)),
+                      const WText('Width:'),
                       SizedBox(
                         width: 100.0,
                         child: Text(
                             "${ProductConfigurations.selectedConfiguration.isNotEmpty ? ProductConfigurations.selectedConfiguration.first.resolution_width * 0.01 : 0}"),
                       ),
-                      const Text('Height:'),
+                      const WText('Height:'),
                       SizedBox(
                         width: 100.0,
-                        child: Text(
+                        child: WText(
                             "${ProductConfigurations.selectedConfiguration.isNotEmpty ? ProductConfigurations.selectedConfiguration.first.resolution_height * 0.01 : 0}"),
                       ),
                       const Text('Size:'),
                       SizedBox(
                         width: 100.0,
-                        child: Text(
+                        child: WText(
                             "${ProductConfigurations.selectedConfiguration.isNotEmpty ? ProductConfigurations.selectedConfiguration.first.resolution_width * ProductConfigurations.selectedConfiguration.first.resolution_height * 0.01 : 0}}"),
                       ),
                     ],
                   ),
                 ),
               ),
-              const SizedBox(height: 20.0),
+              //const SizedBox(height: 20.0),
+              LineBetween(context),
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.99999,
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     children: [
-                      const Text(
+                      const WText(
                         'Dimensions (ft): ',
-                        style: TextStyle(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        color: Color.fromARGB(255, 11, 68, 99),
+                        size: 16.0,
+                        weight: FontWeight.bold,
                       ),
-                      const Text('Width:'),
+                      const WText('Width:'),
                       SizedBox(
                         width: 100.0,
-                        child: Text(
+                        child: WText(
                             "${ProductConfigurations.selectedConfiguration.isNotEmpty ? ProductConfigurations.selectedConfiguration.first.resolution_width * 0.01 * 3.28084 : 0}"),
                       ),
-                      const Text('Height:'),
+                      const WText('Height:'),
                       SizedBox(
                         width: 100.0,
-                        child: Text(
+                        child: WText(
                             "${ProductConfigurations.selectedConfiguration.isNotEmpty ? ProductConfigurations.selectedConfiguration.first.resolution_height * 0.01 * 3.28084 : 0}"),
                       ),
-                      const Text('Size:'),
+                      const WText('Size:'),
                       SizedBox(
                         width: 100.0,
-                        child: Text(
+                        child: WText(
                             "${ProductConfigurations.selectedConfiguration.isNotEmpty ? ProductConfigurations.selectedConfiguration.first.resolution_width * ProductConfigurations.selectedConfiguration.first.resolution_height * 0.01 * 3.28084 : 0}"),
                       ),
                     ],
                   ),
                 ),
               ),
-              const SizedBox(height: 20.0),
+              LineBetween(context),
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.9,
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     children: [
-                      const Text(
-                        'Max Power/W: ',
-                        style: TextStyle(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                      const WText('Max Power/W: ',
+                          size: 16.0,
+                          weight: FontWeight.bold,
+                          color: Color.fromARGB(255, 11, 68, 99)),
                       SizedBox(
                         width: 100.0,
-                        child: Text(
+                        child: WText(
                             "${ProductConfigurations.selectedConfiguration.isNotEmpty ? ProductConfigurations.resolution_height_count * ProductConfigurations.resolution_width_count * ProductConfigurations.selectedConfiguration.first.modulePower : 0}"),
                       ),
-                      const Text(
-                        'Avg Power/W: ',
-                        style: TextStyle(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                      const WText('Avg Power/W: ',
+                          size: 16.0,
+                          weight: FontWeight.bold,
+                          color: Color.fromARGB(255, 11, 68, 99)),
                       SizedBox(
                         width: 100.0,
-                        child: Text(
+                        child: WText(
                             "${ProductConfigurations.selectedConfiguration.isNotEmpty ? ProductConfigurations.resolution_height_count * ProductConfigurations.resolution_width_count * ProductConfigurations.selectedConfiguration.first.modulePower * ProductConfigurations.selectedConfiguration.first.brightness * ProductConfigurations.selectedConfiguration.first.usageFactor : 0}"),
                       ),
                     ],
                   ),
                 ),
               ),
-              const SizedBox(height: 20.0),
+              LineBetween(context),
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.9,
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     children: [
-                      const Text(
-                        'Data Runs: ',
-                        style: TextStyle(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                      const WText('Data Runs: ',
+                          size: 16.0,
+                          weight: FontWeight.bold,
+                          color: Color.fromARGB(255, 11, 68, 99)),
                       SizedBox(
                         width: 100.0,
-                        child: Text(
+                        child: WText(
                             "${ProductConfigurations.selectedConfiguration.isNotEmpty ? ProductConfigurations.selectedConfiguration.first.modulePower : 0}"),
                       ),
-                      const Text(
-                        'AC Required: ',
-                        style: TextStyle(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                      const WText('AC Required: ',
+                          size: 16.0,
+                          weight: FontWeight.bold,
+                          color: Color.fromARGB(255, 11, 68, 99)),
                       const SizedBox(
                         width: 100.0,
                         child: TextField(),
@@ -170,35 +159,32 @@ class _DisplayConfigurationState extends State<DisplayConfiguration> {
                   ),
                 ),
               ),
-              const SizedBox(height: 20.0),
+              LineBetween(context),
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.99999,
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     children: [
-                      const Text(
+                      const WText(
                         'Weight (Kg/Lbs): ',
-                        style: TextStyle(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        color: Color.fromARGB(255, 11, 68, 99),
+                        size: 16.0,
+                        weight: FontWeight.bold,
                       ),
                       SizedBox(
                         width: 100.0,
-                        child: Text(
+                        child: WText(
                             "${ProductConfigurations.selectedConfiguration.isNotEmpty ? ProductConfigurations.selectedConfiguration.first.weigh_per_module * ProductConfigurations.resolution_height_count * ProductConfigurations.resolution_width_count * 2.20462 : 0}"),
                       ),
-                      const Text(
+                      const WText(
                         '# of Sending Box: ',
-                        style: TextStyle(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        size: 16.0,
+                        weight: FontWeight.bold,
                       ),
                       const SizedBox(
                         width: 100.0,
-                        child: Text(""),
+                        child: WText(""),
                       ),
                     ],
                   ),
@@ -208,6 +194,16 @@ class _DisplayConfigurationState extends State<DisplayConfiguration> {
           ),
         ),
       ),
+    );
+  }
+
+  Container LineBetween(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(10),
+      margin: EdgeInsets.only(top: 10, bottom: 10),
+      color: Colors.grey,
+      width: MediaQuery.of(context).size.width,
+      height: 1,
     );
   }
 }
