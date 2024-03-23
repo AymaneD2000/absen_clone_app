@@ -5,7 +5,9 @@ import 'package:absens_clone_app/Models/products.dart';
 import 'package:absens_clone_app/helper/provider.dart';
 import 'package:absens_clone_app/main.dart';
 import 'package:absens_clone_app/widgets/getX.dart';
+import 'package:absens_clone_app/widgets/texte.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
 
 class ProductConfiguration extends StatefulWidget {
@@ -55,6 +57,7 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
                 "Product Configuration",
                 style: TextStyle(
                     fontSize: MediaQuery.of(context).textScaler.scale(20),
+                    color: Colors.blueGrey,
                     fontWeight: FontWeight.bold),
               ),
             ),
@@ -175,7 +178,7 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
             const SizedBox(height: 20.0),
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.9,
-              child: const Text("Data sending Port"),
+              child: const WText("Data sending Port"),
             ),
           ],
         ),
@@ -185,91 +188,107 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
 
   Widget _buildDropdown(String label, String? value, List<Product> items,
       ValueChanged<String?> onChanged) {
-    return Row(
-      children: [
-        Text(
-          label,
-          style: TextStyle(
-              fontSize: MediaQuery.of(context).textScaler.scale(16),
-              fontWeight: FontWeight.bold),
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Row(
+          children: [
+            WText(label,
+                size: MediaQuery.of(context).textScaler.scale(16),
+                weight: FontWeight.bold,
+                color: Color.fromARGB(255, 118, 14, 121)),
+            Gap(50),
+            DropdownButton<String>(
+              value: value,
+              onChanged: onChanged,
+              items: items.map((Product item) {
+                return DropdownMenuItem<String>(
+                  value: item.name,
+                  child: Text(item.name),
+                );
+              }).toList(),
+            ),
+          ],
         ),
-        DropdownButton<String>(
-          value: value,
-          onChanged: onChanged,
-          items: items.map((Product item) {
-            return DropdownMenuItem<String>(
-              value: item.name,
-              child: Text(item.name),
-            );
-          }).toList(),
-        ),
-      ],
+      ),
     );
   }
 
   Widget _buildDropdownConfiguration(
       String label, Product? value, List<Product> items, MyProvider pro) {
-    return Row(
-      children: [
-        Text(
-          label,
-          style: TextStyle(
-              fontSize: MediaQuery.of(context).textScaler.scale(16),
-              fontWeight: FontWeight.bold),
-        ),
-        DropdownButton<Product>(
-          value: value,
-          onChanged: (values) {
-            setState(() {
-              ProductConfigurations.selectedConfiguration.clear();
-              pro.selectedConfiguration.clear();
-              values != null
-                  ? ProductConfigurations.selectedConfiguration.add(values)
-                  : 0;
-              values != null ? pro.selectedConfiguration.add(values) : 0;
-              ProductConfigurations.resolution_height = 0;
-              ProductConfigurations.resolution_width = 0;
-              ProductConfigurations.resolution_height_count = 0;
-              ProductConfigurations.resolution_width_count = 0;
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: [
+            WText(label,
+                color: Color.fromARGB(255, 118, 14, 121),
+                size: MediaQuery.of(context).textScaler.scale(16),
+                weight: FontWeight.bold),
+            Gap(25),
+            DropdownButton<Product>(
+              value: value,
+              onChanged: (values) {
+                setState(() {
+                  ProductConfigurations.selectedConfiguration.clear();
+                  pro.selectedConfiguration.clear();
+                  values != null
+                      ? ProductConfigurations.selectedConfiguration.add(values)
+                      : 0;
+                  values != null ? pro.selectedConfiguration.add(values) : 0;
+                  ProductConfigurations.resolution_height = 0;
+                  ProductConfigurations.resolution_width = 0;
+                  ProductConfigurations.resolution_height_count = 0;
+                  ProductConfigurations.resolution_width_count = 0;
 
-              pro.resolution_height = 0;
-              pro.resolution_width = 0;
-              pro.resolution_height_count = 0;
-              pro.resolution_width_count = 0;
-            });
-          },
-          items: items.map((Product item) {
-            return DropdownMenuItem<Product>(
-              value: item,
-              child: Text(item.name),
-            );
-          }).toList(),
+                  pro.resolution_height = 0;
+                  pro.resolution_width = 0;
+                  pro.resolution_height_count = 0;
+                  pro.resolution_width_count = 0;
+                });
+              },
+              items: items.map((Product item) {
+                return DropdownMenuItem<Product>(
+                  value: item,
+                  child: Text(item.name),
+                );
+              }).toList(),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 
   Widget _buildDropdownBox(String label, SendingBox? value,
       List<SendingBox> items, ValueChanged<SendingBox?> onChanged) {
-    return Row(
-      children: [
-        Text(
-          label,
-          style: TextStyle(
-              fontSize: MediaQuery.of(context).textScaler.scale(16),
-              fontWeight: FontWeight.bold),
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: [
+            WText(
+              label,
+              size: MediaQuery.of(context).textScaler.scale(16),
+              weight: FontWeight.bold,
+              color: Color.fromARGB(255, 118, 14, 121),
+            ),
+            // Gap(20),
+            Spacer(),
+            DropdownButton<SendingBox>(
+              iconSize: 25,
+              value: value,
+              onChanged: onChanged,
+              items: items.map((SendingBox item) {
+                return DropdownMenuItem<SendingBox>(
+                  value: item,
+                  child: Text(item.boxName),
+                );
+              }).toList(),
+            ),
+          ],
         ),
-        DropdownButton<SendingBox>(
-          value: value,
-          onChanged: onChanged,
-          items: items.map((SendingBox item) {
-            return DropdownMenuItem<SendingBox>(
-              value: item,
-              child: Text(item.boxName),
-            );
-          }).toList(),
-        ),
-      ],
+      ),
     );
   }
 
@@ -278,98 +297,72 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
       width: MediaQuery.of(context).size.width * 0.999,
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
-        child: Row(
-          children: [
-            Text(
-              label,
-              style: TextStyle(
-                  fontSize: MediaQuery.of(context).textScaler.scale(16),
-                  fontWeight: FontWeight.bold),
-            ),
-            IconButton(
-              style: const ButtonStyle(
-                  backgroundColor: MaterialStatePropertyAll(Colors.red)),
-              onPressed: () {
-                pro.horizCalculMoin();
-              },
-              icon: Icon(Icons.remove,
-                  color: Colors.white,
-                  size: MediaQuery.of(context).textScaler.scale(18)),
-            ),
-            SizedBox(
-              width: 30.0,
-              child: Center(
-                child: Text(
-                  "${ProductConfigurations.resolution_width_count}",
-                  style: TextStyle(
-                      fontSize: MediaQuery.of(context).textScaler.scale(16),
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
-            IconButton(
-              style: const ButtonStyle(
-                  backgroundColor: MaterialStatePropertyAll(Colors.green)),
-              onPressed: () {
-                pro.horizCalculPlus();
-              },
-              icon: Icon(Icons.add,
-                  color: Colors.white,
-                  size: MediaQuery.of(context).textScaler.scale(18)),
-            ),
-          ],
-        ),
+        child: configAxQty(label, pro, true),
       ),
     );
   }
 
-  Widget _buildQuantitySectionVerticale(String label, MyProvider pro) {
+  Row configAxQty(String label, MyProvider pro, bool horiz) {
+    return Row(
+      children: [
+        WText(label,
+            size: MediaQuery.of(context).textScaler.scale(16),
+            color: Color.fromARGB(255, 11, 68, 99),
+            weight: FontWeight.bold),
+        Gap(15),
+        SizedBox(
+          width: 30.0,
+          child: Center(
+            child: WText(
+                horiz
+                    ? "${ProductConfigurations.resolution_width_count}"
+                    : "${ProductConfigurations.resolution_height_count}",
+                size: MediaQuery.of(context).textScaler.scale(16),
+                weight: FontWeight.bold),
+          ),
+        ),
+        Gap(15),
+        IconButton(
+          style: const ButtonStyle(
+              backgroundColor:
+                  MaterialStatePropertyAll(Color.fromARGB(255, 193, 15, 2))),
+          onPressed: () {
+            if (horiz) {
+              pro.horizCalculMoin();
+            } else {
+              pro.verticalCalculMoin();
+            }
+          },
+          icon: Icon(Icons.remove,
+              color: Colors.white,
+              size: MediaQuery.of(context).textScaler.scale(18)),
+        ),
+        Gap(15),
+        IconButton(
+          style: const ButtonStyle(
+              backgroundColor:
+                  MaterialStatePropertyAll(Color.fromARGB(255, 2, 147, 7))),
+          onPressed: () {
+            if (horiz) {
+              pro.horizCalculPlus();
+            } else {
+              pro.verticalCalculPlus();
+            }
+          },
+          icon: Icon(Icons.add,
+              color: Colors.white,
+              size: MediaQuery.of(context).textScaler.scale(18)),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildQuantitySectionVerticale(String label, MyProvider prov) {
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.999,
       child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: [
-            Text(
-              label,
-              style: TextStyle(
-                  fontSize: MediaQuery.of(context).textScaler.scale(16),
-                  fontWeight: FontWeight.bold),
-            ),
-            IconButton(
-              style: const ButtonStyle(
-                  backgroundColor: MaterialStatePropertyAll(Colors.red)),
-              onPressed: () {
-                provider.verticalCalculMoin();
-              },
-              icon: Icon(Icons.remove,
-                  color: Colors.white,
-                  size: MediaQuery.of(context).textScaler.scale(18)),
-            ),
-            SizedBox(
-              width: 30.0,
-              child: Center(
-                child: Text(
-                  "${ProductConfigurations.resolution_height_count}",
-                  style: TextStyle(
-                      fontSize: MediaQuery.of(context).textScaler.scale(16),
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
-            IconButton(
-              style: const ButtonStyle(
-                  backgroundColor: MaterialStatePropertyAll(Colors.green)),
-              onPressed: () {
-                pro.verticalCalculPlus();
-              },
-              icon: Icon(Icons.add,
-                  color: Colors.white,
-                  size: MediaQuery.of(context).textScaler.scale(18)),
-            ),
-          ],
-        ),
-      ),
+          scrollDirection: Axis.horizontal,
+          child: configAxQty(label, prov, false)),
     );
   }
 
@@ -380,19 +373,17 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
         scrollDirection: Axis.horizontal,
         child: Row(
           children: [
-            Text(
-              label,
-              style: TextStyle(
-                  fontSize: MediaQuery.of(context).textScaler.scale(18),
-                  fontWeight: FontWeight.bold),
-            ),
+            WText(label,
+                size: MediaQuery.of(context).textScaler.scale(18),
+                weight: FontWeight.bold,
+                color: Color.fromARGB(255, 11, 68, 99)),
+            Gap(20),
             SizedBox(
               width: 100,
-              child: Text(
+              child: WText(
                 "$width",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: MediaQuery.of(context).textScaler.scale(16)),
+                size: MediaQuery.of(context).textScaler.scale(16),
+                weight: FontWeight.bold,
               ),
             ),
           ],
@@ -408,19 +399,15 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
         scrollDirection: Axis.horizontal,
         child: Row(
           children: [
-            Text(
-              label,
-              style: TextStyle(
-                  fontSize: MediaQuery.of(context).textScaler.scale(18),
-                  fontWeight: FontWeight.bold),
-            ),
+            WText(label,
+                size: MediaQuery.of(context).textScaler.scale(18),
+                weight: FontWeight.bold,
+                color: Color.fromARGB(255, 11, 68, 99)),
             SizedBox(
-                width: MediaQuery.of(context).size.width * 0.80,
-                child: Text(
-                  "$width",
-                  style: TextStyle(
-                      fontSize: MediaQuery.of(context).textScaler.scale(16)),
-                )),
+              width: MediaQuery.of(context).size.width * 0.80,
+              child: WText("$width",
+                  size: MediaQuery.of(context).textScaler.scale(16)),
+            ),
           ],
         ),
       ),
@@ -434,20 +421,16 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
         scrollDirection: Axis.horizontal,
         child: Row(
           children: [
-            Text(
-              label,
-              style: TextStyle(
-                  fontSize: MediaQuery.of(context).textScaler.scale(18),
-                  fontWeight: FontWeight.bold),
-            ),
+            WText(label,
+                size: MediaQuery.of(context).textScaler.scale(18),
+                weight: FontWeight.bold,
+                color: Color.fromARGB(255, 11, 68, 99)),
             SizedBox(
-                width: 100,
-                child: Text(
-                  "  $width : $height",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: MediaQuery.of(context).textScaler.scale(16)),
-                )),
+              width: 100,
+              child: WText("  $width : $height",
+                  weight: FontWeight.bold,
+                  size: MediaQuery.of(context).textScaler.scale(16)),
+            ),
           ],
         ),
       ),
@@ -462,53 +445,36 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
         scrollDirection: Axis.horizontal,
         child: Row(
           children: [
-            Text(
-              label,
-              style: TextStyle(
-                  fontSize: MediaQuery.of(context).textScaler.scale(18),
-                  fontWeight: FontWeight.bold),
+            WText(label,
+                size: MediaQuery.of(context).textScaler.scale(18),
+                weight: FontWeight.bold,
+                color: Color.fromARGB(255, 11, 68, 99)),
+            const SizedBox(width: 10.0),
+            WText(widthLabel,
+                size: MediaQuery.of(context).textScaler.scale(18),
+                weight: FontWeight.bold),
+            SizedBox(
+              width: 80,
+              child: WText(" ${ProductConfigurations.resolution_width}",
+                  size: MediaQuery.of(context).textScaler.scale(16)),
             ),
             const SizedBox(width: 10.0),
-            Text(
-              widthLabel,
-              style: TextStyle(
-                  fontSize: MediaQuery.of(context).textScaler.scale(18),
-                  fontWeight: FontWeight.bold),
-            ),
+            WText(heightLabel,
+                size: MediaQuery.of(context).textScaler.scale(18),
+                weight: FontWeight.bold),
             SizedBox(
                 width: 80,
-                child: Text(
-                  "${ProductConfigurations.resolution_width}",
-                  style: TextStyle(
-                      fontSize: MediaQuery.of(context).textScaler.scale(16)),
-                )),
+                child: WText(" ${ProductConfigurations.resolution_height}",
+                    size: MediaQuery.of(context).textScaler.scale(16))),
             const SizedBox(width: 10.0),
-            Text(
-              heightLabel,
-              style: TextStyle(
-                  fontSize: MediaQuery.of(context).textScaler.scale(18),
-                  fontWeight: FontWeight.bold),
-            ),
+            WText(sizeLabel,
+                size: MediaQuery.of(context).textScaler.scale(18),
+                weight: FontWeight.bold),
             SizedBox(
                 width: 80,
-                child: Text("${ProductConfigurations.resolution_height}",
-                    style: TextStyle(
-                        fontSize:
-                            MediaQuery.of(context).textScaler.scale(16)))),
-            const SizedBox(width: 10.0),
-            Text(
-              sizeLabel,
-              style: TextStyle(
-                  fontSize: MediaQuery.of(context).textScaler.scale(18),
-                  fontWeight: FontWeight.bold),
-            ),
-            SizedBox(
-                width: 80,
-                child: Text(
+                child: WText(
                     "${ProductConfigurations.resolution_height * ProductConfigurations.resolution_width}",
-                    style: TextStyle(
-                        fontSize:
-                            MediaQuery.of(context).textScaler.scale(16)))),
+                    size: MediaQuery.of(context).textScaler.scale(16))),
           ],
         ),
       ),
