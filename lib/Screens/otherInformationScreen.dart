@@ -5,8 +5,7 @@ import 'package:absens_clone_app/widgets/productInformation.dart';
 import 'package:flutter/widgets.dart';
 
 class OrtherScreen extends StatelessWidget {
-  OrtherScreen({required this.contexte});
-  BuildContext contexte;
+  const OrtherScreen();
   @override
   Widget build(BuildContext contexte) {
     return Column(

@@ -15,14 +15,11 @@ class ProductConfiguration extends StatefulWidget {
 }
 
 class _ProductConfigurationState extends State<ProductConfiguration> {
-  String? _selectedProduct;
   final List<Product> _products = MyHomePage.produits;
-  final List<Product> _configurations = MyHomePage.produits;
   final List<SendingBox> _boxes = MyHomePage.boxs;
 
   void _onProductChanged(String? newProduct) {
     setState(() {
-      _selectedProduct = newProduct;
     });
     MyProvider().onProductChanged(newProduct);
   }

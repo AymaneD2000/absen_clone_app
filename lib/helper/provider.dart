@@ -23,11 +23,15 @@ class MyProvider extends ChangeNotifier {
         ? 0
         : ProductConfigurations.resolution_height_count++;
     resolution_height_count++;
-    var d = ProductConfigurations.selectedConfiguration.first.panel_pix_h *
-        ProductConfigurations.resolution_height_count;
+    int d = 0;
+    ProductConfigurations.selectedConfiguration.isEmpty
+        ? 0
+        : d = ProductConfigurations.selectedConfiguration.first.panel_pix_h *
+            ProductConfigurations.resolution_height_count;
     ProductConfigurations.resolution_height = d.toInt();
-    var dpro =
-        selectedConfiguration.first.panel_pix_h * resolution_height_count;
+    var dpro = selectedConfiguration.isNotEmpty
+        ? selectedConfiguration.first.panel_pix_h * resolution_height_count
+        : 0;
     resolution_height = dpro.toInt();
 
     print("Reso");
@@ -41,15 +45,19 @@ class MyProvider extends ChangeNotifier {
         : ProductConfigurations.resolution_height_count > 0
             ? ProductConfigurations.resolution_height_count--
             : ProductConfigurations.resolution_height_count;
-    var d = ProductConfigurations.selectedConfiguration.first.panel_pix_h *
-        ProductConfigurations.resolution_height_count;
+    int d = 0;
+    ProductConfigurations.selectedConfiguration.isEmpty
+        ? 0
+        : d = ProductConfigurations.selectedConfiguration.first.panel_pix_h *
+            ProductConfigurations.resolution_height_count;
     ProductConfigurations.resolution_height = d.toInt();
 
     resolution_height_count > 0
         ? resolution_height_count--
         : resolution_height_count;
-    var dpro =
-        selectedConfiguration.first.panel_pix_h * resolution_height_count;
+    var dpro = selectedConfiguration.isNotEmpty
+        ? selectedConfiguration.first.panel_pix_h * resolution_height_count
+        : 0;
     resolution_height = dpro.toInt();
     notifyListeners();
   }
@@ -67,14 +75,19 @@ class MyProvider extends ChangeNotifier {
             ? resolution_width_count--
             : resolution_width_count;
 
-    var d = ProductConfigurations.selectedConfiguration.first.panel_px_w *
-        ProductConfigurations.resolution_width_count *
-        ProductConfigurations.selectedConfiguration.first.aspect_ratio_w;
+    double d = 0;
+    ProductConfigurations.selectedConfiguration.isEmpty
+        ? 0
+        : d = ProductConfigurations.selectedConfiguration.first.panel_px_w *
+            ProductConfigurations.resolution_width_count *
+            ProductConfigurations.selectedConfiguration.first.aspect_ratio_w;
     ProductConfigurations.resolution_width = d.toInt();
 
-    var dpro = selectedConfiguration.first.panel_px_w *
-        resolution_width_count *
-        selectedConfiguration.first.aspect_ratio_w;
+    var dpro = selectedConfiguration.isNotEmpty
+        ? selectedConfiguration.first.panel_px_w *
+            resolution_width_count *
+            selectedConfiguration.first.aspect_ratio_w
+        : 0;
     resolution_width = dpro.toInt();
 
     notifyListeners();
@@ -83,13 +96,20 @@ class MyProvider extends ChangeNotifier {
   void horizCalculPlus() {
     ProductConfigurations.selectedConfiguration.isEmpty
         ? 0
-        : resolution_width_count++;
-    ProductConfigurations.resolution_width_count++;
-    var d = ProductConfigurations.selectedConfiguration.first.panel_px_w *
-        ProductConfigurations.resolution_width_count;
+        : {
+            resolution_width_count++,
+            ProductConfigurations.resolution_width_count++
+          };
+    int d = 0;
+    ProductConfigurations.selectedConfiguration.isEmpty
+        ? 0
+        : d = ProductConfigurations.selectedConfiguration.first.panel_px_w *
+            ProductConfigurations.resolution_width_count;
     ProductConfigurations.resolution_width = d.toInt();
     print(resolution_height);
-    var dpro = selectedConfiguration.first.panel_px_w * resolution_width_count;
+    var dpro = selectedConfiguration.isNotEmpty
+        ? selectedConfiguration.first.panel_px_w * resolution_width_count
+        : 0;
     resolution_width = dpro.toInt();
     notifyListeners();
   }
