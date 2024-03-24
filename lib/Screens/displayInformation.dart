@@ -81,13 +81,27 @@ class _DisplayInformationState extends State<DisplayInformation> {
 
     int cellsPerLine = 1;
     int cellsPerColumn = 1;
+    int crossAxis = 1;
 
     if (provider.resolution_width_count > provider.resolution_height_count) {
       cellsPerLine = provider.resolution_width_count;
       cellsPerColumn = provider.resolution_height_count;
+      print("widht sup");
+      print("Line : $cellsPerLine ");
+      print("Column : $cellsPerColumn");
+      if (cellsPerColumn > 0) {
+        crossAxis = cellsPerColumn;
+      }
     } else {
+      print("widht inf");
       cellsPerLine = provider.resolution_height_count;
       cellsPerColumn = provider.resolution_width_count;
+      if (cellsPerLine > 0) {
+        crossAxis = cellsPerLine;
+      }
+      print("Line : $cellsPerLine ");
+      print("Column : $cellsPerColumn");
+      print("CorssAXIS $crossAxis");
     }
 
     final cellAspectRatio = desiredCellWidth / desiredCellHeight;
@@ -98,7 +112,7 @@ class _DisplayInformationState extends State<DisplayInformation> {
           height: desiredCellHeight,
           child: GridView.builder(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: cellsPerLine == 0 ? 1 : cellsPerLine,
+              crossAxisCount: crossAxis,
               childAspectRatio: cellAspectRatio,
             ),
             itemCount: provider.resolution_height_count *

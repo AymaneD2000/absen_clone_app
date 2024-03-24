@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:absens_clone_app/Models/SendingBox.dart';
 import 'package:absens_clone_app/Models/products.dart';
+import 'package:absens_clone_app/Screens/displayInformation.dart';
 import 'package:absens_clone_app/helper/provider.dart';
 import 'package:absens_clone_app/main.dart';
 import 'package:absens_clone_app/widgets/getX.dart';
@@ -21,8 +22,7 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
   final List<SendingBox> _boxes = MyHomePage.boxs;
 
   void _onProductChanged(String? newProduct) {
-    setState(() {
-    });
+    setState(() {});
     MyProvider().onProductChanged(newProduct);
   }
 
@@ -52,6 +52,8 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            DisplayInformation(),
+            Gap(12),
             Center(
               child: Text(
                 "Product Configuration",
@@ -361,9 +363,8 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.999,
       child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: configAxQty(label, prov, false)
-      ),
+          scrollDirection: Axis.horizontal,
+          child: configAxQty(label, prov, false)),
     );
   }
 
