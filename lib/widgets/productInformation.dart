@@ -364,8 +364,9 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.999,
       child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: configAxQty(label, prov, false)),
+        scrollDirection: Axis.horizontal,
+        child: configAxQty(label, prov, false)
+      ),
     );
   }
 
