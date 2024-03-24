@@ -136,8 +136,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   List<Widget> _pages = [
     ProductConfiguration(),
-    DisplayConfiguration(),
     MainDataCableCalculation(),
+    DisplayConfiguration(),
   ];
 
   @override
