@@ -76,7 +76,7 @@ class _DisplayInformationState extends State<DisplayInformation> {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
 
-    final desiredCellHeight = screenHeight * 0.3;
+    final desiredCellHeight = screenHeight * 0.2;
     final desiredCellWidth = screenWidth;
 
     int cellsPerLine = 1;
@@ -92,6 +92,7 @@ class _DisplayInformationState extends State<DisplayInformation> {
       if (cellsPerColumn > 0) {
         crossAxis = cellsPerColumn;
       }
+      //print(250 / cellsPerLine);
     } else {
       print("widht inf");
       cellsPerLine = provider.resolution_height_count;
@@ -102,27 +103,54 @@ class _DisplayInformationState extends State<DisplayInformation> {
       print("Line : $cellsPerLine ");
       print("Column : $cellsPerColumn");
       print("CorssAXIS $crossAxis");
+      //print(250 / cellsPerLine);
     }
 
     final cellAspectRatio = desiredCellWidth / desiredCellHeight;
+    //final cellAspectRatio = cellsPerLine / 300;
 
-    return Column(
-      children: [
-        SizedBox(
-          height: desiredCellHeight,
-          child: GridView.builder(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: crossAxis,
-              childAspectRatio: cellAspectRatio,
-            ),
-            itemCount: provider.resolution_height_count *
-                provider.resolution_width_count,
-            itemBuilder: (context, index) {
-              return CardItems();
-            },
-          ),
-        ),
-      ],
+    return Container(
+      height: 300,
+      child: GridView.builder(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: crossAxis,
+            childAspectRatio: 5,
+            mainAxisExtent: 300 / cellsPerLine),
+        itemCount:
+            provider.resolution_height_count * provider.resolution_width_count,
+        itemBuilder: (context, index) {
+          return Container(
+            height: 5,
+            padding: EdgeInsets.all(2),
+            decoration: BoxDecoration(
+                color: Colors.grey,
+                border: Border.all(color: Colors.white, width: 3)),
+          );
+        },
+      ),
     );
   }
 }
+
+
+
+
+
+// Column(
+//       children: [
+//         SizedBox(
+//           height: desiredCellHeight,
+//           child: GridView.builder(
+//             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+//               crossAxisCount: crossAxis,
+//               childAspectRatio: cellAspectRatio,
+//             ),
+//             itemCount: provider.resolution_height_count *
+//                 provider.resolution_width_count,
+//             itemBuilder: (context, index) {
+//               return CardItems();
+//             },
+//           ),
+//         ),
+//       ],
+//     );
