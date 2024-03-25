@@ -52,8 +52,8 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            DisplayInformation(),
-            Gap(12),
+            // DisplayInformation(),
+            // Gap(12),
             Center(
               child: Text(
                 "Product Configuration",
@@ -317,8 +317,8 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
           child: Center(
             child: WText(
                 horiz
-                    ? "${ProductConfigurations.resolution_width_count}"
-                    : "${ProductConfigurations.resolution_height_count}",
+                    ? "${ProductConfigurations.resolution_height_count}"
+                    : "${ProductConfigurations.resolution_width_count}",
                 size: MediaQuery.of(context).textScaler.scale(16),
                 weight: FontWeight.bold),
           ),
@@ -330,9 +330,9 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
                   MaterialStatePropertyAll(Color.fromARGB(255, 193, 15, 2))),
           onPressed: () {
             if (horiz) {
-              pro.horizCalculMoin();
-            } else {
               pro.verticalCalculMoin();
+            } else {
+              pro.horizCalculMoin();
             }
           },
           icon: Icon(Icons.remove,
@@ -346,9 +346,9 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
                   MaterialStatePropertyAll(Color.fromARGB(255, 2, 147, 7))),
           onPressed: () {
             if (horiz) {
-              pro.horizCalculPlus();
-            } else {
               pro.verticalCalculPlus();
+            } else {
+              pro.horizCalculPlus();
             }
           },
           icon: Icon(Icons.add,
