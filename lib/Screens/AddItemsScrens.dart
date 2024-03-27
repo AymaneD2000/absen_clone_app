@@ -71,41 +71,51 @@ class _InputPageState extends State<InputPage> {
                 'Maximum Pixels per Sending Port', maxPixelsPerPortController),
             buildInputField('Maximum Resolution', maxResolutionController),
             const SizedBox(height: 20.0),
-            ElevatedButton(
-              onPressed: () {
-                // Handle button press here
-                setState(() {
-                  Product p = Product(
-                      dataruns: int.parse(dataRunsController.text),
-                      name: nameController.text,
-                      aspect_ratio_w: double.parse(aspectRatioWController.text),
-                      aspect_ratio_h: double.parse(aspectRatioHController.text),
-                      brightness: double.parse(btightnesController.text),
-                      modulePower: double.parse(modulePowerController.text),
-                      usageFactor: double.parse(usageFactorController.text),
-                      panel_pix_h:
-                          int.parse(horizontalPanelPixelController.text),
-                      maximum_pixel_per_sending_port:
-                          double.parse(maxPixelsPerPortController.text),
-                      maximun_resolution:
-                          double.parse(maxResolutionController.text),
-                      power_consumption_max: powerConsumptionController.text,
-                      resolution_height:
-                          int.parse(resolutionHeightController.text),
-                      resolution_width:
-                          int.parse(resolutionWidthController.text),
-                      panel_px_w: int.parse(verticalPanelPixelController.text),
-                      pixel_per_pouce:
-                          double.parse(pixelPerPouceController.text),
-                      weigh_per_module: 0);
-                  MyHomePage.produits.add(p);
-                });
-                Navigator.pushReplacement(
-                    context, MaterialPageRoute(builder: (context) => MyApp()));
-              },
-              child: const Text(
-                'Submit',
-                style: TextStyle(fontSize: 20),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18)),
+                    padding: EdgeInsets.fromLTRB(100, 20, 100, 20)),
+                onPressed: () {
+                  // Handle button press here
+                  setState(() {
+                    Product p = Product(
+                        dataruns: int.parse(dataRunsController.text),
+                        name: nameController.text,
+                        aspect_ratio_w:
+                            double.parse(aspectRatioWController.text),
+                        aspect_ratio_h:
+                            double.parse(aspectRatioHController.text),
+                        brightness: double.parse(btightnesController.text),
+                        modulePower: double.parse(modulePowerController.text),
+                        usageFactor: double.parse(usageFactorController.text),
+                        panel_pix_h:
+                            int.parse(horizontalPanelPixelController.text),
+                        maximum_pixel_per_sending_port:
+                            double.parse(maxPixelsPerPortController.text),
+                        maximun_resolution:
+                            double.parse(maxResolutionController.text),
+                        power_consumption_max: powerConsumptionController.text,
+                        resolution_height:
+                            int.parse(resolutionHeightController.text),
+                        resolution_width:
+                            int.parse(resolutionWidthController.text),
+                        panel_px_w:
+                            int.parse(verticalPanelPixelController.text),
+                        pixel_per_pouce:
+                            double.parse(pixelPerPouceController.text),
+                        weigh_per_module: 0);
+                    MyHomePage.produits.add(p);
+                  });
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => MyApp()));
+                },
+                child: const Text(
+                  'Submit',
+                  style: TextStyle(fontSize: 20),
+                ),
               ),
             ),
           ],

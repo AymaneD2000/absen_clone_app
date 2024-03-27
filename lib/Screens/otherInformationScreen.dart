@@ -5,12 +5,13 @@ import 'package:absens_clone_app/widgets/productInformation.dart';
 import 'package:flutter/widgets.dart';
 
 class OrtherScreen extends StatelessWidget {
+  const OrtherScreen();
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext contexte) {
     return Column(
       children: [
         SizedBox(
-          height: MediaQuery.of(context).size.height * 0.5,
+          height: MediaQuery.of(contexte).size.height * 0.5,
           child: PageView(
             children: [
               ProductConfiguration(),

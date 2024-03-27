@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CardItems extends StatelessWidget {
-  const CardItems({super.key});
+  CardItems({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -9,9 +9,9 @@ class CardItems extends StatelessWidget {
       padding: EdgeInsets.all(2),
       decoration: BoxDecoration(
           color: Colors.grey,
-          border: Border.all(color: Colors.white, width: 4)),
-      height: 50,
-      width: 50,
+          border: Border.all(color: Colors.white, width: 3)),
+      // height: h,
+      // width: v,
       //color: Colors.grey,
     );
   }

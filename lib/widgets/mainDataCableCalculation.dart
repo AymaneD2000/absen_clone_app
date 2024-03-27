@@ -1,3 +1,5 @@
+import 'package:absens_clone_app/widgets/getX.dart';
+import 'package:absens_clone_app/widgets/texte.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -21,31 +23,30 @@ class _MainDataCableCalculationState extends State<MainDataCableCalculation> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Center(
-              child: Text(
+              child: WText(
                 'Main Data Cables Calculation',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold,
-                ),
+                size: 20.0,
+                weight: FontWeight.bold,
+                color: Colors.blueGrey,
               ),
             ),
             const SizedBox(height: 20.0),
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.999999,
-              child: const SingleChildScrollView(
+              child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: [
-                    Text(
+                    const WText(
                       'Max Data Cascading: ',
-                      style: TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      size: 16.0,
+                      weight: FontWeight.bold,
+                      color: Color.fromARGB(255, 11, 68, 99),
                     ),
                     SizedBox(
                       width: 120,
-                      child: TextField(),
+                      child: WText(
+                          "${ProductConfigurations.selectedBox.isNotEmpty ? (ProductConfigurations.selectedBox.first.npd * ProductConfigurations.selectedBox.first.dbmp) / ProductConfigurations.selectedBox.first.cv : 0}"),
                     ),
                   ],
                 ),
@@ -54,20 +55,20 @@ class _MainDataCableCalculationState extends State<MainDataCableCalculation> {
             const SizedBox(height: 20.0),
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.99999,
-              child: const SingleChildScrollView(
+              child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: [
-                    Text(
+                    const WText(
                       'Max Power Cascading: ',
-                      style: TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      size: 16.0,
+                      weight: FontWeight.bold,
+                      color: Color.fromARGB(255, 11, 68, 99),
                     ),
                     SizedBox(
                       width: 120,
-                      child: TextField(),
+                      child: WText(
+                          "${ProductConfigurations.selectedBox.isNotEmpty ? (ProductConfigurations.selectedBox.first.tc * ProductConfigurations.selectedBox.first.cm) : 0}"),
                     ),
                   ],
                 ),
@@ -76,32 +77,32 @@ class _MainDataCableCalculationState extends State<MainDataCableCalculation> {
             const SizedBox(height: 20.0),
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.9,
-              child: const SingleChildScrollView(
+              child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: [
-                    Text(
+                    const WText(
                       'Horizontal Load: ',
-                      style: TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      size: 16.0,
+                      weight: FontWeight.bold,
+                      color: Color.fromARGB(255, 11, 68, 99),
                     ),
                     SizedBox(
                       width: 60,
-                      child: TextField(),
+                      child: WText(
+                          "${ProductConfigurations.selectedBox.isNotEmpty ? (ProductConfigurations.selectedBox.first.dbmp) / ProductConfigurations.selectedBox.first.cv : 0}"),
                     ),
-                    SizedBox(width: 20.0),
-                    Text(
+                    const SizedBox(width: 20.0),
+                    const WText(
                       'Vertical Load: ',
-                      style: TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      size: 16.0,
+                      weight: FontWeight.bold,
+                      color: Color.fromARGB(255, 11, 68, 99),
                     ),
                     SizedBox(
                       width: 60,
-                      child: TextField(),
+                      child: WText(
+                          "${ProductConfigurations.selectedBox.isNotEmpty && ProductConfigurations.resolution_height_count != 0 ? ((ProductConfigurations.selectedBox.first.dbmp) / ProductConfigurations.selectedBox.first.cv) / ProductConfigurations.resolution_height_count : 0}"),
                     ),
                   ],
                 ),
