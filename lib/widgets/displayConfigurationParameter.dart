@@ -23,7 +23,7 @@ class _DisplayConfigurationState extends State<DisplayConfiguration> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              DisplayInformation(),
+              //DisplayInformation(),
               Gap(10),
               const Center(
                 child: WText(

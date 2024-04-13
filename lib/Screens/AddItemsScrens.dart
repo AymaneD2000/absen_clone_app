@@ -1,8 +1,12 @@
 import 'package:absens_clone_app/Models/products.dart';
+import 'package:absens_clone_app/helper/provider.dart';
 import 'package:absens_clone_app/main.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class InputPage extends StatefulWidget {
+  Product? product;
+  InputPage({this.product});
   @override
   _InputPageState createState() => _InputPageState();
 }
@@ -32,7 +36,38 @@ class _InputPageState extends State<InputPage> {
       TextEditingController();
   final TextEditingController maxResolutionController = TextEditingController();
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if (widget.product != null) {
+      nameController.text = widget.product!.name;
+      horizontalPanelPixelController.text =
+          widget.product!.panel_pix_h.toString();
+      verticalPanelPixelController.text = widget.product!.panel_px_w.toString();
+      resolutionHeightController.text =
+          widget.product!.resolution_height.toString();
+      resolutionWidthController.text =
+          widget.product!.resolution_width.toString();
+      modulePowerController.text = widget.product!.modulePower.toString();
+      usageFactorController.text = widget.product!.usageFactor.toString();
+      btightnesController.text = widget.product!.brightness.toString();
+      dataRunsController.text = widget.product!.dataruns.toString();
+      aspectRatioWController.text = widget.product!.aspect_ratio_w.toString();
+      aspectRatioHController.text = widget.product!.aspect_ratio_h.toString();
+      pixelPerPouceController.text = widget.product!.pixel_per_pouce.toString();
+      powerConsumptionController.text =
+          widget.product!.power_consumption_max.toString();
+      weightController.text = widget.product!.weigh_per_module.toString();
+      maxPixelsPerPortController.text =
+          widget.product!.maximum_pixel_per_sending_port.toString();
+      maxResolutionController.text =
+          widget.product!.maximun_resolution.toString();
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final chatModel = Provider.of<MyProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Panel and Processor Input'),
@@ -107,10 +142,16 @@ class _InputPageState extends State<InputPage> {
                         pixel_per_pouce:
                             double.parse(pixelPerPouceController.text),
                         weigh_per_module: 0);
-                    MyHomePage.produits.add(p);
+                    if (widget.product != null) {
+                      chatModel.updateProduct(p);
+                    } else {
+                      chatModel.addProductItems(p);
+                    }
+
+                    //MyHomePage.produits.add(p);
                   });
                   Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => MyApp()));
+                      MaterialPageRoute(builder: (context) => const MyApp()));
                 },
                 child: const Text(
                   'Submit',
@@ -133,7 +174,9 @@ class _InputPageState extends State<InputPage> {
           labelText: labelText,
           border: const OutlineInputBorder(),
         ),
-        keyboardType: TextInputType.number,
+        keyboardType: labelText == "Product name"
+            ? TextInputType.text
+            : TextInputType.number,
       ),
     );
   }

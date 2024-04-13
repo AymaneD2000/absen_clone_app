@@ -1,5 +1,7 @@
 import 'package:absens_clone_app/Models/SendingBox.dart';
 import 'package:absens_clone_app/Models/products.dart';
+import 'package:absens_clone_app/helper/sqflite.dart';
+import 'package:absens_clone_app/main.dart';
 import 'package:absens_clone_app/widgets/getX.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -10,11 +12,61 @@ class MyProvider extends ChangeNotifier {
   int resolution_height_count = 0;
   int resolution_width = 0;
   int resolution_height = 0;
+  DatabaseManager databaseManager = DatabaseManager();
+  List<Product> produit = [];
+  List<SendingBox> box = [];
 
   String? selectedProduct;
   void onProductChanged(String? newProduct) {
     print("CLique");
     selectedProduct = newProduct;
+    notifyListeners();
+  }
+
+  getProduct() async {
+    produit = await databaseManager.getProduct();
+    notifyListeners();
+  }
+
+  getSendinBox() async {
+    box = await databaseManager.getSendingBox();
+    print(box.length);
+    notifyListeners();
+  }
+
+  addSendingBox(SendingBox box) async {
+    databaseManager.insertSendingBox(box);
+    getSendinBox();
+    notifyListeners();
+  }
+
+  deleteSendingBox(SendingBox box) async {
+    databaseManager.deleteSendingBox(box);
+    getSendinBox();
+    notifyListeners();
+  }
+
+  updateSendingBox(SendingBox box) async {
+    databaseManager.updateSendingBox(box);
+    getSendinBox();
+    notifyListeners();
+  }
+
+  deleteProduct(Product product) async {
+    databaseManager.deleteProduct(product);
+    getProduct();
+    notifyListeners();
+  }
+
+  updateProduct(Product product) async {
+    databaseManager.updateProduct(product);
+    getProduct();
+    notifyListeners();
+  }
+
+  addProductItems(Product product) async {
+    databaseManager.insertProduct(product);
+    getProduct();
     notifyListeners();
   }
 
@@ -100,6 +152,8 @@ class MyProvider extends ChangeNotifier {
             resolution_width_count++,
             ProductConfigurations.resolution_width_count++
           };
+
+    resolution_width_count++;
     int d = 0;
     ProductConfigurations.selectedConfiguration.isEmpty
         ? 0

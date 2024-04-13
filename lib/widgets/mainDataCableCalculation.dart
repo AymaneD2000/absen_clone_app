@@ -1,8 +1,8 @@
+import 'package:absens_clone_app/Screens/displayInformation.dart';
 import 'package:absens_clone_app/widgets/getX.dart';
 import 'package:absens_clone_app/widgets/texte.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:gap/gap.dart';
 
 class MainDataCableCalculation extends StatefulWidget {
   const MainDataCableCalculation({Key? key}) : super(key: key);
@@ -22,6 +22,8 @@ class _MainDataCableCalculationState extends State<MainDataCableCalculation> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // const DisplayInformation(),
+            // const Gap(10),
             const Center(
               child: WText(
                 'Main Data Cables Calculation',

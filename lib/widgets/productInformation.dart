@@ -4,8 +4,6 @@ import 'package:absens_clone_app/Models/SendingBox.dart';
 import 'package:absens_clone_app/Models/products.dart';
 import 'package:absens_clone_app/Screens/displayInformation.dart';
 import 'package:absens_clone_app/helper/provider.dart';
-import 'package:absens_clone_app/main.dart';
-import 'package:absens_clone_app/widgets/getX.dart';
 import 'package:absens_clone_app/widgets/texte.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -14,24 +12,32 @@ import 'package:provider/provider.dart';
 class ProductConfiguration extends StatefulWidget {
   const ProductConfiguration({Key? key}) : super(key: key);
   @override
-  State<ProductConfiguration> createState() => _ProductConfigurationState();
+  State<ProductConfiguration> createState() => _datatate();
 }
 
-class _ProductConfigurationState extends State<ProductConfiguration> {
-  final List<Product> _products = MyHomePage.produits;
-  final List<SendingBox> _boxes = MyHomePage.boxs;
-
-  void _onProductChanged(String? newProduct) {
-    setState(() {});
-    MyProvider().onProductChanged(newProduct);
-  }
+class _datatate extends State<ProductConfiguration> {
+  List<Product> _products = [];
+  List<SendingBox> _boxes = [];
 
   void _onBoxChanged(SendingBox? newProduct) {
     setState(() {
-      newProduct != null
-          ? ProductConfigurations.selectedBox.add(newProduct)
-          : 0;
+      if (newProduct != null) {
+        provider.selectedBox.clear();
+        provider.selectedBox.add(newProduct);
+      }
+      //newProduct != null ?  : 0;
     });
+  }
+
+  getAll() async {
+    while (_products.isEmpty || _boxes.isEmpty) {
+      await provider.getProduct();
+      await provider.getSendinBox();
+      setState(() {
+        _products = provider.produit;
+        _boxes = provider.box;
+      });
+    }
   }
 
   late MyProvider provider;
@@ -41,10 +47,18 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
     super.initState();
     provider = Provider.of<MyProvider>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {});
+    provider.getProduct();
+    provider.getSendinBox();
+    _boxes = provider.box;
+    _products = provider.produit;
   }
 
   @override
   Widget build(BuildContext context) {
+    setState(() {
+      getAll();
+    });
+
     return Consumer<MyProvider>(builder: (context, data, child) {
       return SingleChildScrollView(
           child: Padding(
@@ -52,8 +66,8 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // DisplayInformation(),
-            // Gap(12),
+            DisplayInformation(),
+            Gap(12),
             Center(
               child: Text(
                 "Product Configuration",
@@ -70,26 +84,13 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: [
-                    _buildDropdown("Select Product :", data.selectedProduct,
-                        _products, data.onProductChanged)
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 10.0),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.9999,
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
                     _buildDropdownConfiguration(
-                        "Configuration :",
-                        ProductConfigurations.selectedConfiguration.isEmpty
+                        "Product :",
+                        data.selectedConfiguration.isEmpty
                             ? null
-                            : ProductConfigurations.selectedConfiguration.first,
+                            : data.selectedConfiguration.first,
                         _products,
-                        provider),
+                        data),
                   ],
                 ),
               ),
@@ -126,10 +127,9 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
                 scrollDirection: Axis.horizontal,
                 child: _buildTextFieldRow(
                     "Panel Pix (W) :",
-                    ProductConfigurations.selectedConfiguration.isEmpty
+                    data.selectedConfiguration.isEmpty
                         ? 0
-                        : ProductConfigurations
-                            .selectedConfiguration.first.panel_px_w),
+                        : data.selectedConfiguration.first.panel_px_w),
               ),
             ),
             const SizedBox(height: 10.0),
@@ -139,42 +139,37 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
                 scrollDirection: Axis.horizontal,
                 child: _buildTextFieldRow(
                     "Panel Pix (H) :",
-                    ProductConfigurations.selectedConfiguration.isEmpty
+                    data.selectedConfiguration.isEmpty
                         ? 0
-                        : ProductConfigurations
-                            .selectedConfiguration.first.panel_pix_h),
+                        : data.selectedConfiguration.first.panel_pix_h),
               ),
             ),
             const SizedBox(height: 10.0),
-            _buildResolutionRow("Resolution", "Width :", "Height :", "Size :"),
+            _buildResolutionRow(
+                "Resolution", "Width :", "Height :", "Size :", data),
             const SizedBox(height: 10.0),
             _buildTextFieldRowRatio(
                 "Aspect Ratio (W:H) :",
-                ProductConfigurations.selectedConfiguration.isEmpty
+                data.selectedConfiguration.isEmpty
                     ? 0
-                    : ProductConfigurations
-                        .selectedConfiguration.first.aspect_ratio_w,
-                ProductConfigurations.selectedConfiguration.isEmpty
+                    : data.selectedConfiguration.first.aspect_ratio_w,
+                data.selectedConfiguration.isEmpty
                     ? 0
-                    : ProductConfigurations
-                        .selectedConfiguration.first.aspect_ratio_w),
+                    : data.selectedConfiguration.first.aspect_ratio_w),
             const SizedBox(height: 10.0),
             _buildTextFieldRowDiagonale(
                 "Diagonale :",
-                ProductConfigurations.resolution_height == 0 ||
-                        ProductConfigurations.resolution_width == 0
+                data.resolution_height == 0 || data.resolution_width == 0
                     ? 0
-                    : (sqrt(pow(ProductConfigurations.resolution_height, 2) +
-                            pow(ProductConfigurations.resolution_width, 2)) *
+                    : (sqrt(pow(data.resolution_height, 2) +
+                            pow(data.resolution_width, 2)) *
                         1 /
                         334 *
                         0.0254)),
             const SizedBox(height: 10.0),
             _buildDropdownBox(
-                "Sending Box :",
-                ProductConfigurations.selectedBox.isNotEmpty
-                    ? ProductConfigurations.selectedBox.first
-                    : null,
+                "Sending Unit :",
+                data.selectedBox.isNotEmpty ? data.selectedBox.first : null,
                 _boxes,
                 _onBoxChanged),
             const SizedBox(height: 20.0),
@@ -198,8 +193,8 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
             WText(label,
                 size: MediaQuery.of(context).textScaler.scale(16),
                 weight: FontWeight.bold,
-                color: Color.fromARGB(255, 118, 14, 121)),
-            Gap(50),
+                color: const Color.fromARGB(255, 118, 14, 121)),
+            const Gap(50),
             DropdownButton<String>(
               value: value,
               onChanged: onChanged,
@@ -224,24 +219,28 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
         child: Row(
           children: [
             WText(label,
-                color: Color.fromARGB(255, 118, 14, 121),
+                color: const Color.fromARGB(255, 118, 14, 121),
                 size: MediaQuery.of(context).textScaler.scale(16),
                 weight: FontWeight.bold),
-            Gap(25),
+            const Gap(25),
             DropdownButton<Product>(
               value: value,
               onChanged: (values) {
                 setState(() {
-                  ProductConfigurations.selectedConfiguration.clear();
+                  //data.selectedConfiguration.clear();
                   pro.selectedConfiguration.clear();
-                  values != null
-                      ? ProductConfigurations.selectedConfiguration.add(values)
-                      : 0;
-                  values != null ? pro.selectedConfiguration.add(values) : 0;
-                  ProductConfigurations.resolution_height = 0;
-                  ProductConfigurations.resolution_width = 0;
-                  ProductConfigurations.resolution_height_count = 0;
-                  ProductConfigurations.resolution_width_count = 0;
+                  // values != null
+                  //     ? data.selectedConfiguration.add(values)
+                  //     : 0;
+                  if (values != null) {
+                    pro.selectedConfiguration.clear();
+                    pro.selectedConfiguration.add(values);
+                  }
+
+                  // data.resolution_height = 0;
+                  // data.resolution_width = 0;
+                  // data.resolution_height_count = 0;
+                  // data.resolution_width_count = 0;
 
                   pro.resolution_height = 0;
                   pro.resolution_width = 0;
@@ -273,10 +272,10 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
               label,
               size: MediaQuery.of(context).textScaler.scale(16),
               weight: FontWeight.bold,
-              color: Color.fromARGB(255, 118, 14, 121),
+              color: const Color.fromARGB(255, 118, 14, 121),
             ),
             // Gap(20),
-            Spacer(),
+            const Spacer(),
             DropdownButton<SendingBox>(
               iconSize: 25,
               value: value,
@@ -309,21 +308,21 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
       children: [
         WText(label,
             size: MediaQuery.of(context).textScaler.scale(16),
-            color: Color.fromARGB(255, 11, 68, 99),
+            color: const Color.fromARGB(255, 11, 68, 99),
             weight: FontWeight.bold),
-        Gap(15),
+        const Gap(15),
         SizedBox(
           width: 30.0,
           child: Center(
             child: WText(
                 horiz
-                    ? "${ProductConfigurations.resolution_height_count}"
-                    : "${ProductConfigurations.resolution_width_count}",
+                    ? "${pro.resolution_height_count}"
+                    : "${pro.resolution_width_count}",
                 size: MediaQuery.of(context).textScaler.scale(16),
                 weight: FontWeight.bold),
           ),
         ),
-        Gap(15),
+        const Gap(15),
         IconButton(
           style: const ButtonStyle(
               backgroundColor:
@@ -339,7 +338,7 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
               color: Colors.white,
               size: MediaQuery.of(context).textScaler.scale(18)),
         ),
-        Gap(15),
+        const Gap(15),
         IconButton(
           style: const ButtonStyle(
               backgroundColor:
@@ -378,8 +377,8 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
             WText(label,
                 size: MediaQuery.of(context).textScaler.scale(18),
                 weight: FontWeight.bold,
-                color: Color.fromARGB(255, 11, 68, 99)),
-            Gap(20),
+                color: const Color.fromARGB(255, 11, 68, 99)),
+            const Gap(20),
             SizedBox(
               width: 100,
               child: WText(
@@ -404,7 +403,7 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
             WText(label,
                 size: MediaQuery.of(context).textScaler.scale(18),
                 weight: FontWeight.bold,
-                color: Color.fromARGB(255, 11, 68, 99)),
+                color: const Color.fromARGB(255, 11, 68, 99)),
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.80,
               child: WText("$width",
@@ -426,7 +425,7 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
             WText(label,
                 size: MediaQuery.of(context).textScaler.scale(18),
                 weight: FontWeight.bold,
-                color: Color.fromARGB(255, 11, 68, 99)),
+                color: const Color.fromARGB(255, 11, 68, 99)),
             SizedBox(
               width: 100,
               child: WText("  $width : $height",
@@ -439,8 +438,8 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
     );
   }
 
-  Widget _buildResolutionRow(
-      String label, String widthLabel, String heightLabel, String sizeLabel) {
+  Widget _buildResolutionRow(String label, String widthLabel,
+      String heightLabel, String sizeLabel, MyProvider data) {
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.9999,
       child: SingleChildScrollView(
@@ -450,14 +449,14 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
             WText(label,
                 size: MediaQuery.of(context).textScaler.scale(18),
                 weight: FontWeight.bold,
-                color: Color.fromARGB(255, 11, 68, 99)),
+                color: const Color.fromARGB(255, 11, 68, 99)),
             const SizedBox(width: 10.0),
             WText(widthLabel,
                 size: MediaQuery.of(context).textScaler.scale(18),
                 weight: FontWeight.bold),
             SizedBox(
               width: 80,
-              child: WText(" ${ProductConfigurations.resolution_width}",
+              child: WText(" ${data.resolution_width}",
                   size: MediaQuery.of(context).textScaler.scale(16)),
             ),
             const SizedBox(width: 10.0),
@@ -466,7 +465,7 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
                 weight: FontWeight.bold),
             SizedBox(
                 width: 80,
-                child: WText(" ${ProductConfigurations.resolution_height}",
+                child: WText(" ${data.resolution_height}",
                     size: MediaQuery.of(context).textScaler.scale(16))),
             const SizedBox(width: 10.0),
             WText(sizeLabel,
@@ -475,7 +474,7 @@ class _ProductConfigurationState extends State<ProductConfiguration> {
             SizedBox(
                 width: 80,
                 child: WText(
-                    "${ProductConfigurations.resolution_height * ProductConfigurations.resolution_width}",
+                    "${data.resolution_height * data.resolution_width}",
                     size: MediaQuery.of(context).textScaler.scale(16))),
           ],
         ),
